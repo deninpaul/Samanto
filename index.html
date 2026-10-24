@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#203f91" />
+    <title>Samanto Associates | Engineers, Architects, Project managers, Cost consultants, Valuators</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="header-inner wrap">
+        <a class="brand" href="#home" aria-label="Samanto home"><img class="brand-mark" src="./assets/brand-mark.png" alt="" /></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu"><span></span><span></span><span></span></button>
+        <nav id="primary-nav" class="primary-nav" aria-label="Main navigation">
+          <a href="#home">Home</a><a href="#about">About</a>
+          <div class="services-menu-wrap">
+            <button class="services-menu-toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="services-mega-menu">
+              Services <svg class="icon services-menu-chevron" aria-hidden="true"><use href="./assets/icons.svg#i-chevron-down"/></svg>
+            </button>
+            <div id="services-mega-menu" class="services-mega-menu" hidden>
+              <div class="services-menu-heading"><strong>Our services</strong><span>Explore our areas of expertise</span></div>
+              <div class="services-menu-grid">
+            <a class="services-menu-link" href="#service-valuation"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-building-2"/></svg></span><span><strong>Property Valuation</strong><small>Independent valuations for informed decisions.</small></span></a>
+            <a class="services-menu-link" href="#service-project"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-clipboard-list"/></svg></span><span><strong>Project Management</strong><small>Coordinate delivery, time, quality and cost.</small></span></a>
+            <a class="services-menu-link" href="#service-design"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-ruler"/></svg></span><span><strong>Design &amp; Engineering</strong><small>Practical, integrated engineering solutions.</small></span></a>
+            <a class="services-menu-link" href="#service-cost"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-calculator"/></svg></span><span><strong>Cost Management</strong><small>Clear financial oversight across each project.</small></span></a>
+              </div>
+            </div>
+          </div>
+          <a href="#team">Team</a><a href="#projects">Gallery</a>
+        </nav>
+        <a class="button button--header" href="#contact">Contact us</a>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="hero-section">
+        <div class="hero-inner wrap">
+          <img class="hero-media" src="./assets/Hero_image.jpg" alt="Hero construction project image" loading="eager" />
+          <div class="hero-copy">
+            <div class="eyebrow eyebrow--light"><span class="eyebrow__dot"></span> Over 100 projects served</div>
+            <h1>Building dreams on solid foundations with modern cost effective technology.</h1>
+            <p>Because your vision deserves to be realized.</p>
+            <div class="button-row">
+              <a class="button button--gold" href="#contact">Contact us <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-send"/></svg></a>
+              <a class="button button--ghost" href="#services">Explore our services <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            </div>
+          </div>
+          <div class="clients">
+            <p>Our valued clients:</p>
+            <div class="client-list" aria-label="Our client organizations">
+              <div class="client-track">
+                <div class="client-logo-item" data-client="SBI"><img src="./assets/client-SBI.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>SBI</span></div>
+                <div class="client-logo-item" data-client="Canara Bank"><img src="./assets/client-CanaraBank.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>Canara Bank</span></div>
+                <div class="client-logo-item" data-client="Kerala Bank"><img src="./assets/client-KeralaBank.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>Kerala Bank</span></div>
+                <div class="client-logo-item" data-client="Public Works Department"><img src="./assets/client-PublicWorks.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>Public Works Department</span></div>
+                <div class="client-logo-item" data-client="KIFB"><img src="./assets/client-KIFB.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>KIFB</span></div>
+                <div class="client-logo-item" data-client="Anta"><img src="./assets/client-Anta.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>Anta</span></div>
+                <div class="client-logo-item" data-client="Jessy Memorial Hospital"><img src="./assets/client-Jessy-Memorial-Hospital.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>Jessy Memorial Hospital</span></div>
+                <div class="client-logo-item" data-client="Punjab Bank"><img src="./assets/client-PunjabBank.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>Punjab Bank</span></div>
+                <div class="client-logo-item" data-client="IIIC"><img src="./assets/client-IIIC.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>IIIC</span></div>
+                <div class="client-logo-item" data-client="NRC"><img src="./assets/client-NRC.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>NRC</span></div>
+                <div class="client-logo-item" data-client="LICHFL"><img src="./assets/client-LICHFL.png" alt="" loading="lazy" /><span class="client-logo-label" hidden>LICHFL</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section about-section wrap">
+        <div class="about-heading">
+          <div class="eyebrow"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-info"/></svg>About us</div>
+          <h2 class="section-title">Rooted in<br />innovation.<br /><span class="accent">Driven by value.</span></h2>
+          <img class="about-photo" src="./assets/About%20us.jpg" alt="Team collaborating over plans" loading="lazy" />
+        </div>
+        <div class="about-content">
+          <p class="lead">Established in 2019, SAMANTO ASSOCIATES PVT. LTD. is a multidisciplinary consultancy delivering innovative, cost-effective solutions across civil engineering, project management, cost consultancy and property valuation. Navigating project development and execution involves complex risks and significant financial stakes.</p>
+<p class="lead">Our innovative and cost-effective technical solutions ensure projects are executed with quality, time, and budget. We ensure a client-centric and collaborative approach with clients, partners and specialists for seamless project delivery.</p>
+<p class="lead">As a Registered IBBI Valuer Organisation, we provide comprehensive valuation services for banks, financial institutions, corporate and public assets, wealth tax assessments, and detailed Bill of Quantity valuation for statutory authorities.</p>
+          <div class="stats-grid">
+            <article class="stat-card card">
+              <div class="icon-badge"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-rocket"/></svg></div>
+              <strong>100+</strong><span>Projects completed</span>
+            </article>
+            <article class="stat-card card">
+              <div class="icon-badge"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-house"/></svg></div>
+              <strong>1100+</strong><span>Property valuations last year</span>
+            </article>
+            <article class="stat-card card">
+              <div class="icon-badge"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-contact-round"/></svg></div>
+              <strong>IBBI</strong><span>Registered Organisation</span>
+            </article>
+            <article class="stat-card card">
+              <div class="icon-badge"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-briefcase-business"/></svg></div>
+              <strong>150+</strong><span>Combined years of experience</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="section services-section wrap">
+        <div class="services-intro">
+          <div class="eyebrow"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-briefcase"/></svg>Our services</div>
+          <h2 class="section-title">Our core<br />expertise.</h2>
+          <nav class="service-index" aria-label="Our services">
+            <a class="service-nav-link" href="#service-valuation">Property Valuation</a>
+            <a class="service-nav-link" href="#service-project">Project Management</a>
+            <a class="service-nav-link" href="#service-design">Design &amp; Engineering Consultancy</a>
+            <a class="service-nav-link" href="#service-cost">Cost Management</a>
+          </nav>
+        </div>
+        <div class="service-list">
+        <article id="service-valuation" class="service-card card">
+          <img class="service-image" src="./assets/Services_01.jpg" alt="Property valuation project" loading="lazy" />
+          <h3>Property Valuation</h3>
+          <div class="service-managers"><img src="./assets/service-01-managers.jpg" alt="" loading="lazy" /><span>Managed by Anto, Kishore, Sam and Riyaf</span></div>
+          <p class="lead">Reliable valuations are essential for informed financial decisions and asset assessments. As an IBBI-registered Valuer Organisation, we deliver valuations across residential, commercial, institutional and industrial properties.</p>
+          <p class="lead">Our data-driven, IVS-compliant reports combine local market intelligence, property analysis and regulatory expertise, ensuring accuracy, defensibility, professional ethics and confidentiality.</p>
+          <div class="card-actions">
+            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--outline" href="#contact">Book a call</a>
+          </div>
+        </article>
+        <article id="service-project" class="service-card card">
+          <img class="service-image" src="./assets/Services_02.jpg" alt="Project management site" loading="lazy" />
+          <h3>Project Management</h3>
+          <div class="service-managers"><img src="./assets/service-02-managers.jpg" alt="" loading="lazy" /><span>Managed by Sam and Sharath</span></div>
+          <p class="lead">Our project management services bring architects, engineers and contractors together under focused leadership. Through strategic planning, proactive coordination and rigorous cost control, we drive efficient project execution within defined timelines and budgets.</p>
+          <p class="lead">Leveraging industry best practices and modern management tools, we align project delivery with client objectives while maintaining quality.</p>
+          <div class="card-actions">
+            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--outline" href="#contact">Book a call</a>
+          </div>
+        </article>
+        <article id="service-design" class="service-card card">
+          <img class="service-image" src="./assets/Services_03.jpg" alt="Engineering design project" loading="lazy" />
+          <h3>Design &amp; Engineering Consultancy</h3>
+          <div class="service-managers"><img src="./assets/service-03-managers.jpg" alt="" loading="lazy" /><span>Managed by Resma and Greety</span></div>
+          <p class="lead">Our studio transforms ideas into practical, sustainable and high-performing projects through innovative design and cost-effective engineering solutions. Our team of qualified architects, engineers and technical specialists combines expertise with modern technologies to meet diverse client requirements.</p>
+          <p class="lead">Every solution prioritizes functionality, quality, safety and compliance with applicable standards and industry best practices.</p>
+          <div class="card-actions">
+            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--outline" href="#contact">Book a call</a>
+          </div>
+        </article>
+        <article id="service-cost" class="service-card card">
+          <img class="service-image" src="./assets/Services_04.jpg" alt="Cost management plans" loading="lazy" />
+          <h3>Cost Management</h3>
+          <div class="service-managers"><img src="./assets/service-04-managers.jpg" alt="" loading="lazy" /><span>Managed by Anto and Adhithyan</span></div>
+          <p class="lead">Effective cost management is essential for financially sustainable project delivery. Our cost consultancy services provide financial oversight throughout the project lifecycle, from feasibility and concept design to execution.</p>
+          <p class="lead">We offer budgeting, quantity surveying, detailed estimation, value engineering, whole-life costing, tendering, contract administration and on-site cost monitoring to optimize expenditure and project value.</p>
+          <div class="card-actions">
+            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--outline" href="#contact">Book a call</a>
+          </div>
+        </article>
+        </div>
+      </section>
+
+      <section id="projects" class="section projects-section wrap">
+        <div class="section-title-row">
+          <div>
+            <div class="eyebrow"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-landmark"/></svg>Gallery</div>
+            <h2 class="section-title">Our major projects.</h2>
+          </div>
+          <a class="button button--outline" href="#contact">View all <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+        </div>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-image"><img src="./assets/Project1.jpg" alt="Nalukettu Recreational Club" loading="lazy" /></div>
+            <h3 class="project-title">Nalukettu Recreational Club<svg class="icon project-arrow" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-up-right"/></svg></h3>
+          </article>
+          <article class="project-card">
+            <div class="project-image"><img src="./assets/Project2.jpg" alt="Jessy Memmorial Hospital" loading="lazy" /></div>
+            <h3 class="project-title">Jessy Memmorial Hospital<svg class="icon project-arrow" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-up-right"/></svg></h3>
+          </article>
+          <article class="project-card">
+            <div class="project-image"><img src="./assets/Project3.jpg" alt="Kadukutty Eco Tourisum Project" loading="lazy" /></div>
+            <h3 class="project-title">Kadukutty Eco Tourisum Project<svg class="icon project-arrow" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-up-right"/></svg></h3>
+          </article>
+          <article class="project-card">
+            <div class="project-image"><img src="./assets/Project4.jpg" alt="Shammi Villa Perunthalmanna" loading="lazy" /></div>
+            <h3 class="project-title">Shammi Villa, Perunthalmanna<svg class="icon project-arrow" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-up-right"/></svg></h3>
+          </article>
+          <article class="project-card">
+            <div class="project-image"><img src="./assets/Project5.jpg" alt="Commercial Building, Chalakudy" loading="lazy" /></div>
+            <h3 class="project-title">Commercial Building, Chalakudy<svg class="icon project-arrow" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-up-right"/></svg></h3>
+          </article>
+          <article class="project-card">
+            <div class="project-image"><img src="./assets/Project6.jpg" alt="Kerala Bank, Thripunithura" loading="lazy" /></div>
+            <h3 class="project-title">Kerala Bank, Thripunithura<svg class="icon project-arrow" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-up-right"/></svg></h3>
+          </article>
+        </div>
+      </section>
+
+      <section id="team" class="section team-section wrap">
+        <div class="team-intro">
+          <div class="eyebrow"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-landmark"/></svg>Team</div>
+          <h2 class="section-title">A team built on<br />expertise.</h2>
+          <p class="lead">Our team brings together diverse experience from various disciplines of engineering, united by a commitment to quality and value</p>
+          <a class="button button--outline" href="#contact">View full team <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+        </div>
+        <div class="team-grid">
+          <article class="person-card card">
+            <div class="person-photo"><img src="./assets/TeamMember1.png" alt="Sam Varghese portrait" loading="lazy" /></div>
+            <h3 class="card-title">Sam Varghese</h3>
+            <p class="role">Managing Director</p>
+            <p>With over 38 years of experience, leads the firm in valuation and cost management.</p>
+            <div class="qualifications"><span class="chip">B. E (Civil)</span><span class="chip">F.I.V</span></div>
+          </article>
+          <article class="person-card card">
+            <div class="person-photo"><img src="./assets/TeamMember2.png" alt="Anto Paul portrait" loading="lazy" /></div>
+            <h3 class="card-title">Anto Paul</h3>
+            <p class="role">Business Development Director</p>
+            <p>Guiding client partnerships and business development across the firm's services.</p>
+            <div class="qualifications"><span class="chip">B. E (Civil)</span><span class="chip">M Sc (Val)</span><span class="chip">DCM</span></div>
+          </article>
+          <article class="person-card card">
+            <div class="person-photo"><img src="./assets/TeamMember3.png" alt="Mathew Joseph portrait" loading="lazy" /></div>
+            <h3 class="card-title">Mathew Joseph</h3>
+            <p class="role">MEP Lead Associate Director</p>
+            <p>Bringing multidisciplinary engineering experience to coordinated project delivery.</p>
+            <div class="qualifications"><span class="chip">B. E (Civil)</span><span class="chip">F.I.V</span></div>
+          </article>
+          <article class="person-card card">
+            <div class="person-photo"><img src="./assets/TeamMember4.png" alt="Greety Thomas portrait" loading="lazy" /></div>
+            <h3 class="card-title">Greety Thomas</h3>
+            <p class="role">Architect Lead</p>
+            <p>Combining design thinking and project understanding to shape thoughtful spaces.</p>
+            <div class="qualifications"><span class="chip">B. E (Civil)</span><span class="chip">M Sc (Val)</span><span class="chip">DCM</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section values-section wrap">
+        <div class="values-intro">
+          <div class="eyebrow"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-workflow"/></svg>Features</div>
+          <h2 class="section-title">Why choose<br />Samanto?</h2>
+          <p class="lead">With multidisciplinary expertise, cost-conscious thinking and a commitment to integrity, we deliver practical solutions that protect your interests and create lasting value.</p>
+          <a class="button button--outline" href="#contact">Work with us <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+        </div>
+        <div class="values-grid">
+          <article class="value-card card">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-panels-top-left"/></svg></div>
+            <h3 class="card-title">Multidisciplinary <br />expertise</h3>
+            <p>Engineering, valuation, design and project management under one roof.</p>
+          </article>
+          <article class="value-card card">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-wallet-cards"/></svg></div>
+            <h3 class="card-title">Cost effective <br />solutions</h3>
+            <p>Practical solutions balancing project quality, budgets and long-term value.</p>
+          </article>
+          <article class="value-card card">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-shield-check"/></svg></div>
+            <h3 class="card-title">Professional <br />integrity</h3>
+            <p>Ethical practice, transparency and confidentiality in every engagement.</p>
+          </article>
+          <article class="value-card card">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-lightbulb"/></svg></div>
+            <h3 class="card-title">Innovative <br />thinking</h3>
+            <p>Modern technologies and fresh approaches to complex project challenges.</p>
+          </article>
+          <article class="value-card card">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-target"/></svg></div>
+            <h3 class="card-title">Client focused <br />delivery</h3>
+            <p>Collaborative planning tailored to client requirements and objectives.</p>
+          </article>
+          <article class="value-card card">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-badge-check"/></svg></div>
+            <h3 class="card-title">Standards driven <br />quality</h3>
+            <p>Solutions guided by applicable regulations and industry best practices.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="section contact-section wrap">
+        <div class="contact-form-wrap card">
+          <div class="eyebrow"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-landmark"/></svg>Contact us</div>
+          <h2>Get in touch</h2>
+          <p class="lead">Let’s discuss your next project. Send us a message and we will get back to you as soon as possible.</p>
+          <form id="contact-form" class="contact-form">
+            <label class="field field--wide">Name<input name="name" autocomplete="name" required placeholder="John Mathew" /></label>
+            <label class="field">Phone<input name="phone" type="tel" autocomplete="tel" placeholder="9946704400" /></label>
+            <label class="field">Email<input name="email" type="email" autocomplete="email" required placeholder="johnmathew@gmail.com" /></label>
+            <label class="field field--wide">Subject<input name="subject" placeholder="How can we help you?" /></label>
+            <label class="field field--wide field--label-tone">Message<textarea name="message" rows="4" placeholder="Your message here..."></textarea></label>
+            <button class="button button--primary" type="submit">Send message <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></button>
+            <p class="form-message" aria-live="polite"></p>
+          </form>
+        </div>
+        <aside class="contact-details card">
+          <div class="contact-block">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-map-pinned"/></svg></div>
+            <h3>Our Offices</h3>
+            <p>X/36, Pylappan Memorial Building, NH 544 Opp. Apollo Tyres, Perambra, Chalakudy, Thrissur, Kerala - 680689</p>
+            <a class="text-link" href="https://maps.app.goo.gl/M7X9tsSWeWZfEtVAA" target="_blank" rel="noreferrer">Open in maps</a>
+            <p>Poikayil Sam Nivas, Pulamon Post, Punalur Road, Kottarakara, Kollam, Kerala - 691531</p>
+            <a class="text-link" href="https://maps.app.goo.gl/ucUrEkNksyo1GbsC8" target="_blank" rel="noreferrer">Open in maps</a>
+          </div>
+          <div class="contact-block contact-block--links">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-phone"/></svg></div>
+            <h3>Phone</h3>
+            <a href="tel:+919946704400">+91 9946 704 400</a>
+            <a href="tel:+919539866670">+91 9539 866 670</a>
+          </div>
+          <div class="contact-block contact-block--links">
+            <div class="icon-badge"><svg class="icon icon--thin" aria-hidden="true"><use href="./assets/icons.svg#i-mail"/></svg></div>
+            <h3>Email</h3>
+            <a class="contact-email" href="mailto:info@samanto.in">info@samanto.in</a>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-main wrap">
+        <div class="footer-brand">
+          <a class="brand" href="#home"><img class="brand-mark" src="./assets/brand-mark.png" alt="Samanto" /></a>
+          <p>Building dreams on solid foundations with modern, cost-effective technology.</p>
+        </div>
+        <div class="footer-column footer-contact">
+          <h3>Contact</h3>
+          <a href="tel:+919946704400"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-phone"/></svg>+91 9946 704 400</a><a href="mailto:info@samanto.in"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-mail"/></svg>info@samanto.in</a>
+        </div>
+        <div class="footer-column footer-company">
+          <h3>Company</h3>
+          <a href="#about">About us</a><a href="#services">Services</a><a href="#team">Our team</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+        </div>
+        <div class="footer-column footer-services">
+          <h3>Services</h3>
+          <a href="#service-valuation">Property Valuation</a><a href="#service-project">Project Management</a><a href="#service-design">Design &amp; Engineering</a><a href="#service-cost">Cost Management</a>
+        </div>
+      </div>
+      <div class="footer-bottom wrap">
+        <span>© <span id="current-year"></span> SAMANTO Associates Pvt. Ltd.</span>
+        <div><a href="#contact">Privacy policy</a><a href="#contact">Terms of service</a></div>
+      </div>
+    </footer>
+    <script src="./script.js"></script>
+  </body>
+</html>
