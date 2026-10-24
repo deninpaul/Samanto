@@ -143,10 +143,10 @@
     }
   }
   @media (max-width: 39.99rem) {
-    .section {
+    /* .section {
       --pt: var(--s-64);
       --pb: var(--s-64);
-    }
+    } */
     .contact-section {
       --pt: var(--s-16);
       --pb: var(--s-48);
@@ -162,7 +162,7 @@
     font-size: var(--fs-heading);
     font-weight: 700;
     line-height: 1.12;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.02em;
   }
   .accent {
     color: var(--blue);
@@ -174,12 +174,12 @@
   }
   .text-link {
     font-size: var(--fs-small);
-    font-weight: 600;
+    font-weight: 700;
     color: var(--blue);
   }
   @media (max-width: 39.99rem) {
     .section-title {
-      font-size: var(--fs-heading-sm);
+      /* font-size: var(--fs-heading-sm); */
       line-height: 1.15;
     }
   }
@@ -230,6 +230,7 @@
     border-radius: 9999px;
     background: var(--pale);
     color: var(--ink-label);
+    font-size: var(--fs-small);
   }
 
   /* ---------- buttons ---------- */
@@ -308,11 +309,6 @@
     color: var(--blue);
   }
   @media (max-width: 39.99rem) {
-    .button--gold,
-    .button--ghost,
-    .button--primary {
-      padding: var(--s-8) var(--s-16);
-    }
     .button--header {
       display: none;
     }
@@ -359,6 +355,7 @@
   }
   .brand-mark {
     object-fit: contain;
+    height: 2.5rem;
   }
   .site-footer .brand-mark {
     height: 2.5rem;
@@ -558,8 +555,8 @@
   }
   .hero-media {
     width: 100%;
-    height: 22.5rem;
-    object-fit: cover;
+    overflow: hidden;
+    aspect-ratio: 31 / 9;
     object-position: center;
   }
   .hero-copy {
@@ -635,23 +632,10 @@
       transform: translateX(-50%);
     }
   }
-  @media (max-width: 56.24rem) {
-    .hero-media {
-      height: 18.75rem;
-    }
-  }
+
   @media (max-width: 39.99rem) {
-    .hero-section {
-      padding-bottom: var(--s-24);
-    }
-    .hero-media {
-      height: 13.125rem;
-    }
     .hero-copy {
       padding-top: var(--s-32);
-    }
-    .hero-copy h1 {
-      font-size: var(--fs-heading-sm);
     }
     .hero-copy p {
       font-size: var(--fs-body);
@@ -659,9 +643,7 @@
     .button-row {
       flex-wrap: wrap;
     }
-    .clients {
-      padding-top: var(--s-32);
-    }
+
     .client-track {
       gap: var(--s-16);
       padding-right: var(--s-16);
@@ -707,7 +689,12 @@
     margin-top: var(--s-8);
     color: var(--ink-label);
   }
-  @media (max-width: 39.99rem) {
+  @media (max-width: 56.25rem) {
+    .about-content {
+      margin-top: 0;
+    }
+  }
+  @media (max-width: 28rem) {
     .about-photo {
       height: 13.125rem;
     }
@@ -724,6 +711,11 @@
   /* ---------- services ---------- */
   .services-intro .section-title {
     margin-bottom: var(--s-48);
+  }
+  @media (max-width: 56.25rem) {
+    .services-intro .section-title {
+      margin-bottom: 0;
+    }
   }
   @media (min-width: 56.25rem) {
     .services-intro {
@@ -824,14 +816,13 @@
   }
   @media (max-width: 56.24rem) {
     .service-index {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: none;
+    }
+    .service-list {
+      margin-top: 0;
     }
   }
   @media (max-width: 39.99rem) {
-    .service-index {
-      gap: var(--s-8);
-    }
     .service-image {
       height: 10.3125rem;
     }
@@ -855,6 +846,13 @@
   @media (min-width: 56.25rem) {
     .project-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 56.25rem) {
+    .section-title-row {
+      flex-direction: column;
+      align-items: start;
+      gap: var(--s-32);
     }
   }
   .project-card {
@@ -930,16 +928,10 @@
   .team-grid,
   .values-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--s-24);
     margin-top: var(--s-64);
     align-content: start;
-  }
-  @media (min-width: 56.25rem) {
-    .team-grid,
-    .values-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
   .person-card {
     padding: var(--s-24);
@@ -984,9 +976,10 @@
     margin: var(--s-8) 0 var(--s-16);
     line-height: 1.6;
   }
-  @media (max-width: 39.99rem) {
+  @media (max-width: 28rem) {
     .team-grid,
     .values-grid {
+      grid-template-columns: 1fr;
       gap: var(--s-8);
     }
     .person-card,
