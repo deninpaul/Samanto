@@ -1,0 +1,147 @@
+@layer components {
+  /* Layout used only by the four standalone service pages. */
+  .service-hero {
+    padding-bottom: var(--s-96);
+  }
+  .service-hero img {
+    object-fit: cover;
+    border-radius: 0.325rem;
+  }
+  .service-details-section {
+    padding-top: var(--s-96);
+    row-gap: var(--s-96);
+    column-gap: var(--s-24);
+  }
+  .service-details-section > * {
+    min-width: 0;
+  }
+  .service-overview {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--s-24);
+    row-gap: var(--s-48);
+    min-width: 0;
+  }
+
+  .service-hero .hero-copy {
+    max-width: 64rem;
+  }
+  .service-hero .hero-copy h1 {
+    margin-top: 0;
+  }
+  .service-detail-copy {
+    grid-column: 1 / span 7;
+    max-width: 55rem;
+  }
+  .service-detail-copy .lead + .lead {
+    margin-top: var(--s-24);
+  }
+  .service-detail-stats {
+    grid-column: 9 / span 3;
+    grid-template-columns: 1fr;
+    gap: var(--s-16);
+    align-content: start;
+    margin-top: 0;
+  }
+  .service-detail-stats .stat-card {
+    min-height: 8.5rem;
+  }
+  .service-team-block {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  .service-team-block > .section-title {
+    margin: var(--s-16) 0 var(--s-64);
+  }
+  .service-team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-16);
+    min-width: 0;
+  }
+  .service-team-card {
+    display: flex;
+    min-width: 0;
+    height: auto;
+    align-items: start;
+    gap: var(--s-24);
+    overflow: visible;
+  }
+  .service-team-card .service-team-photo {
+    aspect-ratio: 1;
+    flex: none;
+    height: 7em;
+    width: 7rem;
+  }
+  .service-team-card .service-team-photo img {
+    height: 100%;
+    margin-inline: auto;
+    object-fit: cover;
+    object-position: center;
+  }
+  .service-team-info {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: visible;
+  }
+  .service-team-info .qualifications {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    max-height: none;
+    overflow: visible;
+  }
+  .service-team-info .card-title {
+    margin-top: 0;
+  }
+  .service-team-card .chip--highlight {
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+
+  @media (max-width: 64rem) {
+    .service-overview {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .service-detail-copy,
+    .service-detail-stats {
+      grid-column: 1 / -1;
+    }
+    .service-detail-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 56.25rem) {
+    .service-detail-copy,
+    .service-detail-stats,
+    .service-team-block {
+      grid-column: 1 / -1;
+    }
+    .service-detail-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .service-team-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 40rem) {
+    .service-details-section {
+      padding-top: var(--s-64);
+    }
+    .service-hero {
+    padding-bottom: var(--s-64);
+  }
+  }
+  @media (max-width: 25rem) {
+    .service-team-card {
+      gap: var(--s-12);
+    }
+    .service-team-card .service-team-photo {
+      flex-basis: 5rem;
+      height: 5rem;
+      width: 5rem;
+    }
+  }
+}

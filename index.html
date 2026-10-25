@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+  <script>document.documentElement.classList.add("js");</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#203f91" />
     <meta name="description" content="Samanto Associates delivers property valuation, project management, engineering, and cost consultancy services from offices in Kerala, India." />
@@ -28,8 +29,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="tokens.css" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
 
   <body>
@@ -44,12 +45,12 @@
               Services <svg class="icon services-menu-chevron" aria-hidden="true"><use href="./assets/icons.svg#i-chevron-down"/></svg>
             </button>
             <div id="services-mega-menu" class="services-mega-menu" hidden>
-              <div class="services-menu-heading"><strong>Our services</strong><span>Explore our areas of expertise</span></div>
+              <div class="services-menu-heading"><strong>Explore our areas of expertise</strong></div>
               <div class="services-menu-grid">
-            <a class="services-menu-link" href="#service-valuation"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-building-2"/></svg></span><span><strong>Property Valuation</strong><small>Independent valuations for informed decisions.</small></span></a>
-            <a class="services-menu-link" href="#service-project"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-clipboard-list"/></svg></span><span><strong>Project Management</strong><small>Coordinate delivery, time, quality and cost.</small></span></a>
-            <a class="services-menu-link" href="#service-design"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-ruler"/></svg></span><span><strong>Design &amp; Engineering</strong><small>Practical, integrated engineering solutions.</small></span></a>
-            <a class="services-menu-link" href="#service-cost"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-calculator"/></svg></span><span><strong>Cost Management</strong><small>Clear financial oversight across each project.</small></span></a>
+            <a class="services-menu-link" href="./services/property-valuation.html"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-building-2"/></svg></span><span><strong>Property Valuation</strong><small>Independent valuations for informed decisions.</small></span></a>
+            <a class="services-menu-link" href="./services/project-management.html"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-clipboard-list"/></svg></span><span><strong>Project Management</strong><small>Coordinate delivery, time, quality and cost.</small></span></a>
+            <a class="services-menu-link" href="./services/design-engineering.html"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-ruler"/></svg></span><span><strong>Design &amp; Engineering</strong><small>Practical, integrated engineering solutions.</small></span></a>
+            <a class="services-menu-link" href="./services/cost-management.html"><span class="services-menu-icon"><svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-calculator"/></svg></span><span><strong>Cost Management</strong><small>Clear financial oversight across each project.</small></span></a>
               </div>
             </div>
           </div>
@@ -152,7 +153,7 @@
           <p class="lead">Reliable valuations are essential for informed financial decisions and asset assessments. As an IBBI-registered Valuer Organisation, we deliver valuations across residential, commercial, institutional and industrial properties.</p>
           <p class="lead extra">Our data-driven, IVS-compliant reports combine local market intelligence, property analysis and regulatory expertise, ensuring accuracy, defensibility, professional ethics and confidentiality.</p>
           <div class="card-actions">
-            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--soft" href="./services/property-valuation.html">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
             <a class="button button--outline" href="#contact">Book a call</a>
           </div>
         </article>
@@ -163,7 +164,7 @@
           <p class="lead">Our project management services bring architects, engineers and contractors together under focused leadership. Through strategic planning, proactive coordination and rigorous cost control, we drive efficient project execution within defined timelines and budgets.</p>
           <p class="lead extra">Leveraging industry best practices and modern management tools, we align project delivery with client objectives while maintaining quality.</p>
           <div class="card-actions">
-            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--soft" href="./services/project-management.html">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
             <a class="button button--outline" href="#contact">Book a call</a>
           </div>
         </article>
@@ -174,18 +175,18 @@
           <p class="lead">Our studio transforms ideas into practical, sustainable and high-performing projects through innovative design and cost-effective engineering solutions. Our team of qualified architects, engineers and technical specialists combines expertise with modern technologies to meet diverse client requirements.</p>
           <p class="lead extra">Every solution prioritizes functionality, quality, safety and compliance with applicable standards and industry best practices.</p>
           <div class="card-actions">
-            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--soft" href="./services/design-engineering.html">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
             <a class="button button--outline" href="#contact">Book a call</a>
           </div>
         </article>
         <article id="service-cost" class="service-card card">
-          <div class="service-image-frame image-wipe"><img class="service-image" src="https://res.cloudinary.com/dq2erku8o/image/upload/v1792913652/Samanto/Services_03.webp" alt="Samanto Associates cost management and project planning." loading="lazy" /></div>
+          <div class="service-image-frame image-wipe"><img class="service-image" src="https://res.cloudinary.com/dq2erku8o/image/upload/v1792913652/Samanto/Services_04.webp" alt="Samanto Associates cost management and project planning." loading="lazy" /></div>
           <h3>Cost Management</h3>
           <div class="service-managers"><img src="https://res.cloudinary.com/dq2erku8o/image/upload/v1792913657/Samanto/service-04-managers.webp" alt="Anto and Adhithyan, Samanto Associates cost managers." loading="lazy" /><span>Managed by Anto and Adhithyan</span></div>
           <p class="lead">Effective cost management is essential for financially sustainable project delivery. Our cost consultancy services provide financial oversight throughout the project lifecycle, from feasibility and concept design to execution.</p>
           <p class="lead extra">We offer budgeting, quantity surveying, detailed estimation, value engineering, whole-life costing, tendering, contract administration and on-site cost monitoring to optimize expenditure and project value.</p>
           <div class="card-actions">
-            <a class="button button--soft" href="#contact">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
+            <a class="button button--soft" href="./services/cost-management.html">Learn more <svg class="icon" aria-hidden="true"><use href="./assets/icons.svg#i-arrow-right"/></svg></a>
             <a class="button button--outline" href="#contact">Book a call</a>
           </div>
         </article>
@@ -251,14 +252,14 @@
             <div class="qualifications"><span class="chip">B. E (Civil)</span><span class="chip">M Sc (Val)</span><span class="chip">DCM</span></div>
           </article>
           <article class="person-card card">
-            <div class="person-photo image-wipe"><img src="https://res.cloudinary.com/dq2erku8o/image/upload/v1792913657/Samanto/TeamMember3.webp" alt="Mathew Joseph, MEP Lead Associate Director at Samanto Associates." loading="lazy" /></div>
+            <div class="person-photo image-wipe"><img src="https://res.cloudinary.com/dq2erku8o/image/upload/v1792913657/Samanto/TeamMember4.webp" alt="Mathew Joseph, MEP Lead Associate Director at Samanto Associates." loading="lazy" /></div>
             <h3 class="card-title">Mathew Joseph</h3>
             <p class="role">MEP Lead Associate Director</p>
             <p>Bringing multidisciplinary engineering experience to coordinated project delivery.</p>
             <div class="qualifications"><span class="chip">B. E (Civil)</span><span class="chip">F.I.V</span></div>
           </article>
           <article class="person-card card">
-            <div class="person-photo image-wipe"><img src="https://res.cloudinary.com/dq2erku8o/image/upload/v1792913657/Samanto/TeamMember4.webp" alt="Greety Thomas, Architect Lead at Samanto Associates." loading="lazy" /></div>
+            <div class="person-photo image-wipe"><img src="https://res.cloudinary.com/dq2erku8o/image/upload/v1792913657/Samanto/TeamMember3.webp" alt="Greety Thomas, Architect Lead at Samanto Associates." loading="lazy" /></div>
             <h3 class="card-title">Greety Thomas</h3>
             <p class="role">Architect Lead</p>
             <p>Combining design thinking and project understanding to shape thoughtful spaces.</p>
@@ -364,7 +365,7 @@
         </div>
         <div class="footer-column footer-services">
           <h3>Services</h3>
-          <a href="#service-valuation">Property Valuation</a><a href="#service-project">Project Management</a><a href="#service-design">Design &amp; Engineering</a><a href="#service-cost">Cost Management</a>
+          <a href="./services/property-valuation.html">Property Valuation</a><a href="./services/project-management.html">Project Management</a><a href="./services/design-engineering.html">Design &amp; Engineering</a><a href="./services/cost-management.html">Cost Management</a>
         </div>
       </div>
       <div class="footer-bottom wrap">

@@ -3,6 +3,58 @@ const navigation = document.querySelector("#primary-nav");
 const siteHeader = document.querySelector(".site-header");
 const servicesMenuButton = document.querySelector(".services-menu-toggle");
 const servicesMenu = document.querySelector("#services-mega-menu");
+const servicesMenuWrap = document.querySelector(".services-menu-wrap");
+const canHoverServicesMenu = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 50.001rem)");
+const navHoverIndicator = document.createElement("span");
+navHoverIndicator.className = "nav-hover-indicator";
+navHoverIndicator.setAttribute("aria-hidden", "true");
+navigation?.prepend(navHoverIndicator);
+let activeNavHoverTarget = null;
+let servicesMenuHideTimer = 0;
+
+const getNavHoverTarget = (target) => {
+  if (!(target instanceof Element)) return null;
+  const item = target.closest(".services-menu-toggle, a");
+  if (!item || !navigation?.contains(item)) return null;
+  if (item.matches("a") && (item.parentElement !== navigation || item.closest(".services-menu-link"))) return null;
+  return item;
+};
+
+const positionNavHoverIndicator = (item) => {
+  if (!canHoverServicesMenu.matches || navigation?.classList.contains("is-open") || !item) {
+    navHoverIndicator.classList.remove("is-visible");
+    return;
+  }
+  const navRect = navigation.getBoundingClientRect();
+  const itemRect = item.getBoundingClientRect();
+  const indicatorStyle = window.getComputedStyle(navHoverIndicator);
+  const horizontalPadding = Number.parseFloat(indicatorStyle.paddingLeft) || 0;
+  const verticalPadding = Number.parseFloat(indicatorStyle.paddingTop) || 0;
+  navHoverIndicator.style.width = `${itemRect.width + horizontalPadding * 2}px`;
+  navHoverIndicator.style.height = `${itemRect.height + verticalPadding * 2}px`;
+  navHoverIndicator.style.transform = `translate3d(${itemRect.left - navRect.left - horizontalPadding}px, ${itemRect.top - navRect.top - verticalPadding}px, 0)`;
+  navHoverIndicator.classList.add("is-visible");
+};
+
+navigation?.addEventListener("pointerover", (event) => {
+  if (event.pointerType !== "mouse") return;
+  const item = getNavHoverTarget(event.target);
+  if (!item) return;
+  activeNavHoverTarget = item;
+  positionNavHoverIndicator(item);
+});
+navigation?.addEventListener("pointerleave", () => {
+  activeNavHoverTarget = null;
+  navHoverIndicator.classList.remove("is-visible");
+});
+navigation?.addEventListener("focusin", (event) => {
+  const item = getNavHoverTarget(event.target);
+  if (item) positionNavHoverIndicator(item);
+});
+navigation?.addEventListener("focusout", (event) => {
+  if (!navigation.contains(event.relatedTarget)) navHoverIndicator.classList.remove("is-visible");
+});
+window.addEventListener("resize", () => positionNavHoverIndicator(activeNavHoverTarget));
 
 if (typeof Lenis === "function") {
   new Lenis({
@@ -16,6 +68,38 @@ if (typeof Lenis === "function") {
 }
 
 document.querySelectorAll(".card").forEach((card) => card.classList.add("card-reveal"));
+
+const showImageFallback = (image) => {
+  if (image.closest(".brand, .client-logo-item")) return;
+
+  const fallback = document.createElement("div");
+  const isManagerImage = Boolean(image.closest(".service-managers"));
+  fallback.className = `${[...image.classList]
+    .filter((name) => !["image-wipe", "image-loading", "project-image-reveal", "is-visible", "is-revealed"].includes(name))
+    .join(" ")} image-fallback${isManagerImage ? " image-fallback--compact" : ""}`.trim();
+  fallback.setAttribute("role", "img");
+  fallback.setAttribute("aria-label", image.alt || "Samanto image unavailable");
+
+  const frame = image.parentElement;
+  frame?.classList.remove("image-loading");
+  if (frame?.classList.contains("image-wipe")) frame.classList.remove("image-wipe", "is-revealed");
+  image.replaceWith(fallback);
+};
+
+document.querySelectorAll("img").forEach((image) => {
+  if (image.closest(".brand, .client-logo-item")) return;
+  const frame = image.parentElement;
+  const updateLoadingState = (loading) => {
+    image.classList.toggle("image-loading", loading);
+    if (frame?.matches(".service-image-frame, .project-image, .person-photo")) {
+      frame.classList.toggle("image-loading", loading);
+    }
+  };
+  image.addEventListener("load", () => updateLoadingState(false), { once: true });
+  image.addEventListener("error", () => showImageFallback(image), { once: true });
+  if (image.complete && image.naturalWidth === 0) showImageFallback(image);
+  else if (!image.complete) updateLoadingState(true);
+});
 
 const revealCardImages = (card) => {
   window.setTimeout(() => {
@@ -191,8 +275,12 @@ buttonRevealTargets.forEach((button) => {
 
 const closeServicesMenu = () => {
   if (!servicesMenu || !servicesMenuButton) return;
-  servicesMenu.hidden = true;
+  window.clearTimeout(servicesMenuHideTimer);
+  servicesMenuWrap?.classList.remove("is-open");
   servicesMenuButton.setAttribute("aria-expanded", "false");
+  servicesMenuHideTimer = window.setTimeout(() => {
+    servicesMenu.hidden = true;
+  }, 360);
 };
 
 const closeMobileNavigation = () => {
@@ -203,11 +291,27 @@ const closeMobileNavigation = () => {
   document.body.classList.remove("menu-open");
 };
 
+const openServicesMenu = () => {
+  if (!servicesMenu || !servicesMenuButton) return;
+  window.clearTimeout(servicesMenuHideTimer);
+  servicesMenu.hidden = false;
+  servicesMenuButton.setAttribute("aria-expanded", "true");
+  window.requestAnimationFrame(() => {
+    if (servicesMenuButton.getAttribute("aria-expanded") === "true") {
+      servicesMenuWrap?.classList.add("is-open");
+    }
+  });
+};
+
+servicesMenuWrap?.addEventListener("focusout", (event) => {
+  if (!servicesMenuWrap.contains(event.relatedTarget)) closeServicesMenu();
+});
+
 servicesMenuButton?.addEventListener("click", () => {
   if (!servicesMenu) return;
   const open = servicesMenuButton.getAttribute("aria-expanded") === "true";
-  servicesMenu.hidden = open;
-  servicesMenuButton.setAttribute("aria-expanded", String(!open));
+  if (open) closeServicesMenu();
+  else openServicesMenu();
 });
 
 document.addEventListener("click", (event) => {
@@ -382,7 +486,7 @@ contactForm?.addEventListener("submit", async (event) => {
   if (status) status.textContent = "Sending your message...";
 
   try {
-    const response = await fetch("./api/contact.php", {
+    const response = await fetch(form.dataset.endpoint || "./api/contact.php", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
