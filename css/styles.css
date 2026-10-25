@@ -258,6 +258,27 @@
     background: var(--blue-soft);
     color: var(--blue);
   }
+  .image-loading,
+  .image-fallback {
+    background-color: transparent;
+    background-image: linear-gradient(100deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.04) 65%);
+    background-size: 220% 100%;
+    animation: image-shimmer 1.6s ease-in-out infinite;
+  }
+  .image-fallback--compact {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius);
+  }
+  @keyframes image-shimmer {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: -100% 0;
+    }
+  }
   .chip {
     display: inline-flex;
     align-items: center;
@@ -427,12 +448,38 @@
   }
 
   .primary-nav {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--s-24);
     color: #fff;
     font-size: var(--fs-small);
     line-height: 1.65;
+  }
+  .nav-hover-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    padding: var(--s-4) var(--s-8);
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 10%);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.16s ease;
+  }
+  .nav-hover-indicator.is-visible {
+    opacity: 1;
+  }
+  .primary-nav:not(.is-open) > a:not(.button--header),
+  .primary-nav:not(.is-open) .services-menu-wrap {
+    position: relative;
+    z-index: 1;
   }
   @media (min-width: 64rem) {
     .primary-nav {
@@ -476,7 +523,7 @@
     color: var(--blue);
   }
 
-  @media (max-width: 50rem) {
+  @media (max-width: 47.5rem) {
     .site-header {
       background-color: transparent;
       box-shadow: none;
@@ -551,6 +598,17 @@
       background: transparent;
       color: #fff;
       box-shadow: none;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.34s ease, opacity 0.22s ease, visibility 0s linear 0.34s;
+    }
+    .primary-nav.is-open .services-menu-wrap.is-open .services-mega-menu {
+      max-height: 40rem;
+      overflow-y: auto;
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
     }
     .primary-nav.is-open .services-menu-heading {
       display: none;
@@ -663,7 +721,7 @@
     }
   }
 
-  @media (min-width: 27.5rem) and (max-width: 50rem) {
+  @media (min-width: 27.5rem) and (max-width: 47.5rem) {
     .button--header {
       display: inline-flex;
       order: 2;
@@ -706,6 +764,24 @@
     background: #fff;
     color: var(--ink-title);
     box-shadow: var(--shadow-menu);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+  }
+  .services-menu-wrap.is-open .services-mega-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  .services-mega-menu::before {
+    position: absolute;
+    top: -1.75rem;
+    right: 0;
+    left: 0;
+    height: 1.75rem;
+    content: "";
   }
   .services-menu-heading {
     display: flex;
@@ -1089,6 +1165,10 @@
     object-position: center;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
+  .service-image-frame > .image-fallback.service-image {
+    min-height: 0;
+    border: 0;
+  }
   .service-image-frame:hover .service-image,
   .service-image-frame:focus-within .service-image {
     transform: scale(1.0225);
@@ -1195,6 +1275,14 @@
     object-fit: cover;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
+  .project-image > .image-fallback {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+    height: 100%;
+    border: 0;
+    border-radius: inherit;
+  }
   .person-card:hover .person-photo img,
   .person-card:focus-within .person-photo img {
     transform: scale(1.045);
@@ -1288,6 +1376,14 @@
     margin-inline: auto;
     object-fit: cover;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .person-photo.image-loading {
+    background-size: 220% 100%;
+  }
+  .person-photo > .image-fallback {
+    height: 100%;
+    min-height: 0;
+    border: 0;
   }
   .role {
     margin: var(--s-6) 0 var(--s-16);
@@ -1652,6 +1748,13 @@
 
 /* ============================== MOTION ============================== */
 @layer motion {
+  .js .hero-copy > .eyebrow,
+  .js .hero-copy > h1,
+  .js .hero-copy > p,
+  .js .hero-copy .button {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
   .text-reveal,
   .eyebrow-reveal {
     opacity: 0;
@@ -1732,6 +1835,9 @@
   .image-wipe:not(.is-revealed) {
     clip-path: inset(0 100% 0 0);
   }
+  .image-wipe.image-loading:not(.is-revealed) {
+    clip-path: none;
+  }
   .image-wipe.is-revealed {
     animation: image-wipe-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
@@ -1745,6 +1851,9 @@
   }
   .service-image-frame.image-wipe:not(.is-revealed) {
     clip-path: inset(0 50% 0 0);
+  }
+  .service-image-frame.image-wipe.image-loading:not(.is-revealed) {
+    clip-path: none;
   }
   .service-image-frame.image-wipe.is-revealed {
     animation: service-image-wipe-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -1764,6 +1873,11 @@
     .client-track {
       animation: none;
     }
+    .image-loading,
+    .image-fallback {
+      animation: none;
+      background-position: center;
+    }
     .service-nav-link::before,
     .project-image::after,
     .project-image img,
@@ -1773,9 +1887,13 @@
     .project-arrow,
     .services-menu-chevron,
     .button::before,
+    .services-mega-menu,
     .contact-toast,
     .primary-nav,
     .menu-toggle span {
+      transition: none;
+    }
+    .nav-hover-indicator {
       transition: none;
     }
     .project-card:hover .project-image img,
@@ -1798,6 +1916,13 @@
       opacity: 1;
       transform: none;
       transition: none;
+    }
+    .js .hero-copy > .eyebrow,
+    .js .hero-copy > h1,
+    .js .hero-copy > p,
+    .js .hero-copy .button {
+      opacity: 1;
+      transform: none;
     }
     .image-wipe {
       clip-path: none;
