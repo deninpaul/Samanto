@@ -1208,6 +1208,9 @@
   .card-actions .button {
     gap: var(--s-8);
   }
+  .extra {
+    display: none;
+  }
   @media (min-width: 56.25rem) {
     .services-intro {
       position: sticky;
@@ -1232,9 +1235,6 @@
   @media (max-width: 30rem) {
     .service-card {
       padding: var(--s-24) calc(var(--s-24) - var(--s-2)) var(--s-32);
-      .extra {
-        display: none;
-      }
       .service-card .lead:first-of-type {
         margin: var(--s-24) 0 var(--s-32);
       }
