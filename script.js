@@ -394,6 +394,7 @@ if (clientTrack) {
     return clone;
   });
   clientTrack.append(...duplicatedItems);
+  clientTrack.classList.add("is-ready");
 }
 
 const serviceLinks = [...document.querySelectorAll(".service-nav-link")];

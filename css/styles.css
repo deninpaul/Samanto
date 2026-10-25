@@ -942,7 +942,11 @@
     width: max-content;
     padding-right: var(--s-32);
     animation: client-marquee 52s linear infinite;
+    animation-play-state: paused;
     will-change: transform;
+  }
+  .client-track.is-ready {
+    animation-play-state: running;
   }
   .client-logo-item {
     display: flex;
@@ -998,6 +1002,12 @@
     }
     .clients > p {
       margin-bottom: var(--s-32);
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .client-track {
+      animation-duration: 36s;
     }
   }
 
