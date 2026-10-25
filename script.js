@@ -4,6 +4,17 @@ const siteHeader = document.querySelector(".site-header");
 const servicesMenuButton = document.querySelector(".services-menu-toggle");
 const servicesMenu = document.querySelector("#services-mega-menu");
 
+if (typeof Lenis === "function") {
+  new Lenis({
+    autoRaf: true,
+    anchors: true,
+    allowNestedScroll: true,
+    stopInertiaOnNavigate: true,
+    lerp: 0.13,
+    wheelMultiplier: 1.05,
+  });
+}
+
 document.querySelectorAll(".card").forEach((card) => card.classList.add("card-reveal"));
 
 const revealCardImages = (card) => {
@@ -250,63 +261,6 @@ window.addEventListener("resize", () => {
   }
 });
 
-let smoothScrollFrame = 0;
-const stopSmoothScroll = () => {
-  if (!smoothScrollFrame) return;
-  window.cancelAnimationFrame(smoothScrollFrame);
-  smoothScrollFrame = 0;
-  document.documentElement.classList.remove("custom-scroll-active");
-};
-
-["wheel", "touchstart", "pointerdown"].forEach((type) => {
-  window.addEventListener(type, stopSmoothScroll, { passive: true });
-});
-window.addEventListener("keydown", (event) => {
-  if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(event.key)) {
-    stopSmoothScroll();
-  }
-});
-
-document.addEventListener("click", (event) => {
-  if (!(event.target instanceof Element)) return;
-  const link = event.target.closest('a[href^="#"]');
-  if (!link || link.target || event.defaultPrevented) return;
-  const id = decodeURIComponent(link.hash.slice(1));
-  const target = id ? document.getElementById(id) : document.documentElement;
-  if (!target) return;
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  event.preventDefault();
-  stopSmoothScroll();
-
-  const scrollPadding = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-  const startY = window.scrollY;
-  const endY = Math.max(0, startY + target.getBoundingClientRect().top - scrollPadding);
-  const distance = endY - startY;
-  if (Math.abs(distance) < 2) return;
-
-  if (window.location.hash !== link.hash) history.pushState(null, "", link.hash);
-  const duration = Math.min(1100, Math.max(450, 450 + Math.abs(distance) * 0.12));
-  const startTime = performance.now();
-  document.documentElement.classList.add("custom-scroll-active");
-
-  const animateScroll = (now) => {
-    const progress = Math.min(1, (now - startTime) / duration);
-    const eased = progress < 0.5
-      ? 4 * progress * progress * progress
-      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-    window.scrollTo(0, startY + distance * eased);
-
-    if (progress < 1) smoothScrollFrame = window.requestAnimationFrame(animateScroll);
-    else {
-      smoothScrollFrame = 0;
-      document.documentElement.classList.remove("custom-scroll-active");
-    }
-  };
-
-  smoothScrollFrame = window.requestAnimationFrame(animateScroll);
-});
-
 document.querySelector("#current-year").textContent = new Date().getFullYear();
 
 const clientTrack = document.querySelector(".client-track");
@@ -382,8 +336,70 @@ if (serviceCards.length) {
   updateActiveServiceFromScroll();
 }
 
-document.querySelector("#contact-form").addEventListener("submit", (event) => {
+const contactForm = document.querySelector("#contact-form");
+const contactToast = document.querySelector("#contact-toast");
+const contactToastMessage = document.querySelector("#contact-toast-message");
+const dismissContactToast = contactToast?.querySelector(".contact-toast-dismiss");
+let contactToastTimer = 0;
+let contactToastHideTimer = 0;
+
+const hideContactToast = () => {
+  window.clearTimeout(contactToastTimer);
+  if (!contactToast || contactToast.hidden) return;
+  contactToast.classList.add("is-hiding");
+  window.clearTimeout(contactToastHideTimer);
+  contactToastHideTimer = window.setTimeout(() => {
+    contactToast.hidden = true;
+    contactToast.classList.remove("is-hiding");
+  }, 240);
+};
+
+const showContactToast = () => {
+  if (!contactToast || !contactToastMessage) return;
+  window.clearTimeout(contactToastTimer);
+  window.clearTimeout(contactToastHideTimer);
+  contactToast.hidden = true;
+  contactToast.classList.remove("is-hiding");
+  window.requestAnimationFrame(() => {
+    contactToast.hidden = false;
+  });
+  contactToastTimer = window.setTimeout(hideContactToast, 5000);
+};
+
+dismissContactToast?.addEventListener("click", hideContactToast);
+
+contactForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
-  document.querySelector(".form-message").textContent = "Thanks for reaching out. We will be in touch soon.";
-  event.currentTarget.reset();
+  const form = event.currentTarget;
+  const status = form.querySelector(".form-message");
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalButtonContent = submitButton?.innerHTML;
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.setAttribute("aria-busy", "true");
+    submitButton.textContent = "Sending...";
+  }
+  if (status) status.textContent = "Sending your message...";
+
+  try {
+    const response = await fetch("./api/contact.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.message || "We couldn't send your message. Please try again.");
+
+    if (status) status.textContent = "";
+    showContactToast();
+    form.reset();
+  } catch (error) {
+    if (status) status.textContent = error.message || "We couldn't send your message. Please try again.";
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.removeAttribute("aria-busy");
+      submitButton.innerHTML = originalButtonContent || "Send message";
+    }
+  }
 });

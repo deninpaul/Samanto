@@ -14,6 +14,28 @@
     background: var(--navy);
     -webkit-text-size-adjust: 100%;
   }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis:not(.lenis-autoToggle).lenis-stopped {
+    overflow: clip;
+  }
+  .lenis [data-lenis-prevent],
+  .lenis [data-lenis-prevent-wheel],
+  .lenis [data-lenis-prevent-touch],
+  .lenis [data-lenis-prevent-vertical],
+  .lenis [data-lenis-prevent-horizontal] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+  .lenis.lenis-autoToggle {
+    transition-property: overflow;
+    transition-duration: 1ms;
+    transition-behavior: allow-discrete;
+  }
   body {
     margin: 0;
     background: #1F43B6;
@@ -409,6 +431,7 @@
     align-items: center;
     gap: var(--s-24);
     color: #fff;
+    font-size: var(--fs-small);
     line-height: 1.65;
   }
   @media (min-width: 64rem) {
@@ -925,6 +948,41 @@
     gap: var(--s-24);
     margin-top: var(--s-48);
   }
+  .stats-grid .icon-badge,
+  .values-grid .icon-badge {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition: color 0.2s;
+  }
+  .stats-grid .icon-badge::before,
+  .values-grid .icon-badge::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    content: "";
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .stats-grid .icon-badge .icon,
+  .values-grid .icon-badge .icon {
+    position: relative;
+    z-index: 1;
+  }
+  .stats-grid .stat-card:hover .icon-badge,
+  .stats-grid .stat-card:focus-within .icon-badge,
+  .values-grid .value-card:hover .icon-badge,
+  .values-grid .value-card:focus-within .icon-badge {
+    color: #fff;
+  }
+  .stats-grid .stat-card:hover .icon-badge::before,
+  .stats-grid .stat-card:focus-within .icon-badge::before,
+  .values-grid .value-card:hover .icon-badge::before,
+  .values-grid .value-card:focus-within .icon-badge::before {
+    transform: scaleX(1);
+  }
   .stat-card {
     display: flex;
     flex-direction: column;
@@ -980,7 +1038,7 @@
     position: relative;
     display: block;
     color: var(--ink-label);
-    font-size: var(--fs-button);
+    font-size: var(--fs-lg);
     font-weight: 500;
     line-height: 1.65;
     transition: color 0.2s;
@@ -1017,12 +1075,23 @@
   .service-card {
     padding: var(--s-48) calc(calc(var(--s-40) + var(--s-4)));
   }
-  .service-image {
+  .service-image-frame {
     width: 100%;
     aspect-ratio: 31 / 9;
     overflow: hidden;
-    object-position: center;
     background: #e2e8f0;
+  }
+  .service-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .service-image-frame:hover .service-image,
+  .service-image-frame:focus-within .service-image {
+    transform: scale(1.0225);
   }
   .service-card h3 {
     margin-top: var(--s-24);
@@ -1096,9 +1165,8 @@
     .card-actions .button {
       font-size: var(--fs-body);
     }
-    .service-image {
+    .service-image-frame {
       aspect-ratio: 31 / 11;
-      object-fit: cover;
     }
   }
 
@@ -1125,6 +1193,15 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .person-card:hover .person-photo img,
+  .person-card:focus-within .person-photo img {
+    transform: scale(1.045);
+  }
+  .project-card:hover .project-image img,
+  .project-card:focus-within .project-image img {
+    --project-hover-scale: 1.045;
   }
   .project-image::after {
     content: "";
@@ -1210,6 +1287,7 @@
     max-width: 100%;
     margin-inline: auto;
     object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .role {
     margin: var(--s-6) 0 var(--s-16);
@@ -1325,6 +1403,114 @@
     color: var(--success);
     font-size: var(--fs-small);
   }
+  .contact-toast {
+    position: fixed;
+    right: max(var(--s-16), env(safe-area-inset-right));
+    top: max(var(--s-16), env(safe-area-inset-top));
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: var(--s-12);
+    width: min(28rem, calc(100vw - var(--s-32)));
+    padding: var(--s-16);
+    border: 1px solid #c8e8d1;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #f3fbf5;
+    color: var(--ink-title);
+    box-shadow: var(--shadow-menu);
+    animation: contact-toast-in 0.24s ease-out both;
+    transition: opacity 0.24s ease, transform 0.24s ease;
+  }
+  .contact-toast.is-hiding {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    pointer-events: none;
+  }
+  .contact-toast::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 0.2rem;
+    content: "";
+    background: var(--success);
+    transform-origin: left;
+    animation: contact-toast-progress 5s linear both;
+  }
+  .contact-toast[hidden] {
+    display: none;
+  }
+  .contact-toast-icon {
+    display: grid;
+    flex: 0 0 2.25rem;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    background: #e2f3e7;
+    color: var(--success);
+  }
+  .contact-toast-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+  }
+  .contact-toast-copy {
+    flex: 1;
+    min-width: 0;
+  }
+  .contact-toast-copy strong {
+    display: block;
+    color: var(--ink-title);
+    font-size: var(--fs-body);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .contact-toast-copy p {
+    margin: 0.15rem 0 0;
+    color: var(--ink-body);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+  }
+  .contact-toast-dismiss {
+    display: grid;
+    flex: 0 0 2rem;
+    align-self: center;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--ink-label);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .contact-toast-dismiss:hover,
+  .contact-toast-dismiss:focus-visible {
+    background: #e2f3e7;
+    color: var(--success);
+  }
+  @keyframes contact-toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes contact-toast-progress {
+    to {
+      transform: scaleX(0);
+    }
+  }
   .contact-details {
     display: grid;
     grid-template-columns: 1fr;
@@ -1403,7 +1589,7 @@
     line-height: 1.45;
   }
   .footer-column h3 {
-    color: inherit;
+    color: #fff;
     font-size: var(--fs-small);
     font-weight: 600;
     line-height: 1.5;
@@ -1534,14 +1720,14 @@
   }
   .project-image-reveal {
     opacity: 0;
-    transform: translateY(0.625rem);
+    transform: translateY(0.625rem) scale(var(--project-hover-scale, 1));
     transition:
       opacity 0.6s ease,
       transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .project-image-reveal.is-visible {
     opacity: 1;
-    transform: none;
+    transform: translateY(0) scale(var(--project-hover-scale, 1));
   }
   .image-wipe:not(.is-revealed) {
     clip-path: inset(0 100% 0 0);
@@ -1557,10 +1743,10 @@
       clip-path: inset(0);
     }
   }
-  .service-image.image-wipe:not(.is-revealed) {
+  .service-image-frame.image-wipe:not(.is-revealed) {
     clip-path: inset(0 50% 0 0);
   }
-  .service-image.image-wipe.is-revealed {
+  .service-image-frame.image-wipe.is-revealed {
     animation: service-image-wipe-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   @keyframes service-image-wipe-in {
@@ -1580,13 +1766,27 @@
     }
     .service-nav-link::before,
     .project-image::after,
+    .project-image img,
+    .person-photo img,
+    .service-image,
     .project-title,
     .project-arrow,
     .services-menu-chevron,
     .button::before,
+    .contact-toast,
     .primary-nav,
     .menu-toggle span {
       transition: none;
+    }
+    .project-card:hover .project-image img,
+    .project-card:focus-within .project-image img,
+    .person-card:hover .person-photo img,
+    .person-card:focus-within .person-photo img {
+      transform: none;
+    }
+    .service-image-frame:hover .service-image,
+    .service-image-frame:focus-within .service-image {
+      transform: none;
     }
     .text-reveal,
     .eyebrow-reveal,
@@ -1608,8 +1808,5 @@
     .hero-copy .button-reveal.is-visible {
       animation: none;
     }
-  }
-  html.custom-scroll-active {
-    scroll-behavior: auto !important;
   }
 }
