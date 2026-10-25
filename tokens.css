@@ -22,26 +22,30 @@
   /* type */
   --font-sans: "Plus Jakarta Sans", Arial, sans-serif;
   --fs-display: 3.5rem;
-  --fs-heading: 3.5rem;
+  --fs-heading: 3.25rem;
   --fs-heading-sm: 2rem;
   --fs-contact: 2.5rem;
   --fs-title: 1.5rem;
-  --fs-subheading: 1.25rem;
   --fs-lg: 1.125rem;
   --fs-body: 1rem;
+  --fs-button: 1rem;
   --fs-small: 0.875rem;
   --fs-micro: 0.75rem;
 
   /* spacing (named by px value, as in the old config) */
+  --s-2: 0.125rem;
+  --s-4: 0.25rem;
   --s-6: 0.375rem;
   --s-8: 0.5rem;
+  --s-12: 0.75rem;
   --s-16: 1rem;
   --s-24: 1.5rem;
   --s-32: 2rem;
-  --s-44: 2.75rem;
+  --s-40: 2.5rem;
   --s-48: 3rem;
   --s-64: 4rem;
   --s-80: 5rem;
+  --s-96: 6rem;
   --s-120: 7.5rem;
 
   /* layout */
@@ -55,6 +59,13 @@
   --shadow-header: 0 0.125rem 0.75rem rgb(20 43 95 / 0.18);
   --shadow-menu: 0 1rem 2.5rem rgb(20 43 95 / 0.2);
 }
-@media (max-width: 39.99rem) {
-  :root { --gutter: 2rem; }
+@media (max-width: 40rem) {
+  :root {
+    --gutter: 2rem;
+    --fs-display: 2.25rem;
+    --fs-heading: 2.5rem;
+    --fs-heading-sm: 1.75rem;
+    --fs-lg: 1rem;
+    --fs-body: 0.875rem;
+  }
 }
