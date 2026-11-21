@@ -1,6 +1,93 @@
 const menuButton = document.querySelector(".menu-toggle");
 const navigation = document.querySelector("#primary-nav");
 const siteHeader = document.querySelector(".site-header");
+const pageScrollbar = document.createElement("div");
+const pageScrollbarThumb = document.createElement("div");
+pageScrollbar.className = "page-scrollbar";
+pageScrollbar.setAttribute("role", "scrollbar");
+pageScrollbar.setAttribute("aria-label", "Page scroll position");
+pageScrollbar.setAttribute("aria-orientation", "vertical");
+pageScrollbar.setAttribute("aria-valuemin", "0");
+pageScrollbar.setAttribute("aria-valuemax", "100");
+pageScrollbar.tabIndex = 0;
+pageScrollbarThumb.className = "page-scrollbar-thumb";
+pageScrollbar.append(pageScrollbarThumb);
+document.body.append(pageScrollbar);
+
+let pageScrollbarFrame = 0;
+let pageScrollbarDragOffset = 0;
+
+const updatePageScrollbar = () => {
+  const documentHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+  const maxScroll = Math.max(0, documentHeight - window.innerHeight);
+  const isLocked = document.body.classList.contains("experience-mode-locked");
+  if (isLocked || maxScroll < 1) {
+    pageScrollbar.style.display = "none";
+    return;
+  }
+
+  const thumbHeight = Math.max(28, (window.innerHeight * window.innerHeight) / documentHeight);
+  const thumbTravel = Math.max(0, window.innerHeight - thumbHeight);
+  const progress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+  pageScrollbarThumb.style.height = `${thumbHeight}px`;
+  pageScrollbarThumb.style.transform = `translateY(${progress * thumbTravel}px)`;
+  pageScrollbar.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
+  pageScrollbar.style.display = "block";
+};
+
+const schedulePageScrollbarUpdate = () => {
+  if (pageScrollbarFrame) return;
+  pageScrollbarFrame = requestAnimationFrame(() => {
+    pageScrollbarFrame = 0;
+    updatePageScrollbar();
+  });
+};
+
+const scrollFromThumbPosition = (thumbTop) => {
+  const documentHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+  const maxScroll = Math.max(0, documentHeight - window.innerHeight);
+  const thumbHeight = pageScrollbarThumb.getBoundingClientRect().height;
+  const thumbTravel = Math.max(1, window.innerHeight - thumbHeight);
+  const top = Math.min(thumbTravel, Math.max(0, thumbTop));
+  window.scrollTo({ top: (top / thumbTravel) * maxScroll, behavior: "instant" });
+};
+
+pageScrollbar.addEventListener("pointerdown", (event) => {
+  if (event.target === pageScrollbarThumb) {
+    pageScrollbarDragOffset = event.clientY - pageScrollbarThumb.getBoundingClientRect().top;
+    pageScrollbarThumb.setPointerCapture(event.pointerId);
+  } else {
+    scrollFromThumbPosition(event.clientY - pageScrollbarThumb.getBoundingClientRect().height / 2);
+  }
+  event.preventDefault();
+});
+
+pageScrollbarThumb.addEventListener("pointermove", (event) => {
+  if (pageScrollbarThumb.hasPointerCapture(event.pointerId)) {
+    scrollFromThumbPosition(event.clientY - pageScrollbarDragOffset);
+  }
+});
+
+pageScrollbarThumb.addEventListener("pointerup", (event) => {
+  if (pageScrollbarThumb.hasPointerCapture(event.pointerId)) pageScrollbarThumb.releasePointerCapture(event.pointerId);
+});
+
+pageScrollbar.addEventListener("keydown", (event) => {
+  const amount = event.key.startsWith("Page") ? window.innerHeight * 0.9 : 48;
+  const movesDown = event.key === "ArrowDown" || event.key === "PageDown";
+  const movesUp = event.key === "ArrowUp" || event.key === "PageUp";
+  if (movesDown || movesUp || event.key === "Home" || event.key === "End") {
+    event.preventDefault();
+    const top = event.key === "Home" ? 0 : event.key === "End" ? document.documentElement.scrollHeight : window.scrollY + (movesDown ? amount : -amount);
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+});
+
+window.addEventListener("scroll", schedulePageScrollbarUpdate, { passive: true });
+window.addEventListener("resize", schedulePageScrollbarUpdate, { passive: true });
+if ("ResizeObserver" in window) new ResizeObserver(schedulePageScrollbarUpdate).observe(document.documentElement);
+schedulePageScrollbarUpdate();
+
 const servicesMenuButton = document.querySelector(".services-menu-toggle");
 const servicesMenu = document.querySelector("#services-mega-menu");
 const servicesMenuWrap = document.querySelector(".services-menu-wrap");
@@ -70,7 +157,7 @@ if (typeof Lenis === "function") {
 document.querySelectorAll(".card").forEach((card) => card.classList.add("card-reveal"));
 
 const showImageFallback = (image) => {
-  if (image.closest(".brand, .client-logo-item")) return;
+  if (image.closest(".brand, .client-logo-item, .hero-client-set")) return;
 
   const fallback = document.createElement("div");
   const isManagerImage = Boolean(image.closest(".service-managers"));
@@ -87,7 +174,7 @@ const showImageFallback = (image) => {
 };
 
 document.querySelectorAll("img").forEach((image) => {
-  if (image.closest(".brand, .client-logo-item")) return;
+  if (image.closest(".brand, .client-logo-item, .hero-client-set")) return;
   const frame = image.parentElement;
   const updateLoadingState = (loading) => {
     image.classList.toggle("image-loading", loading);
@@ -367,36 +454,6 @@ window.addEventListener("resize", () => {
 
 document.querySelector("#current-year").textContent = new Date().getFullYear();
 
-const clientTrack = document.querySelector(".client-track");
-if (clientTrack) {
-  const showClientFallback = (image) => {
-    if (image.naturalWidth > 1) return;
-    image.hidden = true;
-    const item = image.closest(".client-logo-item");
-    const label = item?.querySelector(".client-logo-label");
-    if (label) label.hidden = false;
-  };
-
-  clientTrack.querySelectorAll(".client-logo-item").forEach((item) => {
-    item.setAttribute("role", "img");
-    item.setAttribute("aria-label", `${item.dataset.client} client logo`);
-    const image = item.querySelector("img");
-    image?.addEventListener("load", () => showClientFallback(image));
-    if (image?.complete) showClientFallback(image);
-  });
-
-  const duplicatedItems = [...clientTrack.children].map((item) => {
-    const clone = item.cloneNode(true);
-    clone.setAttribute("aria-hidden", "true");
-    const image = clone.querySelector("img");
-    image?.addEventListener("load", () => showClientFallback(image));
-    if (image?.complete) showClientFallback(image);
-    return clone;
-  });
-  clientTrack.append(...duplicatedItems);
-  clientTrack.classList.add("is-ready");
-}
-
 const serviceLinks = [...document.querySelectorAll(".service-nav-link")];
 const serviceCards = serviceLinks.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
 
@@ -508,3 +565,200 @@ contactForm?.addEventListener("submit", async (event) => {
     }
   }
 });
+
+const experienceApp = document.querySelector("#experience-app");
+if (experienceApp) {
+  const experiencePanels = [...experienceApp.querySelectorAll("[data-panel]")];
+  const heroSlides = [...experienceApp.querySelectorAll(".hero-slide")];
+  const slideButtons = [...experienceApp.querySelectorAll("[data-slide-to]")];
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const enteredPanels = new Set(["home"]);
+  let activeSlide = 0;
+  let heroSlideTimer = 0;
+  let wheelGestureHandled = false;
+  let wheelGestureTimer = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchGestureHandled = false;
+
+  const panelOrder = experiencePanels.map((panel) => panel.dataset.panel);
+  const stepPanel = (direction) => {
+    const activeIndex = panelOrder.indexOf(experienceApp.dataset.active);
+    const nextIndex = Math.max(0, Math.min(panelOrder.length - 1, activeIndex + direction));
+    if (nextIndex !== activeIndex) openExperiencePanel(panelOrder[nextIndex]);
+  };
+
+  const resetWheelGestureAfterPause = () => {
+    window.clearTimeout(wheelGestureTimer);
+    wheelGestureTimer = window.setTimeout(() => {
+      wheelGestureHandled = false;
+    }, 160);
+  };
+
+  const resetHeroSlideTimer = () => {
+    window.clearTimeout(heroSlideTimer);
+    heroSlideTimer = 0;
+    if (
+      reducedMotion.matches ||
+      !experienceApp.classList.contains("is-hero-ready") ||
+      experienceApp.dataset.active !== "home" ||
+      document.hidden ||
+      !document.hasFocus()
+    ) return;
+    heroSlideTimer = window.setTimeout(() => showSlide(activeSlide + 1), 5000);
+  };
+
+  const showSlide = (index) => {
+    if (!heroSlides.length) return;
+    activeSlide = (index + heroSlides.length) % heroSlides.length;
+    heroSlides.forEach((slide, slideIndex) => {
+      const active = slideIndex === activeSlide;
+      slide.classList.toggle("is-active", active);
+      slide.setAttribute("aria-hidden", String(!active));
+    });
+    slideButtons.forEach((button, buttonIndex) => {
+      if (buttonIndex === activeSlide) button.setAttribute("aria-current", "true");
+      else button.removeAttribute("aria-current");
+    });
+    resetHeroSlideTimer();
+  };
+
+  const openExperiencePanel = (name) => {
+    const activePanel = experiencePanels.find((panel) => panel.dataset.panel === name);
+    if (!activePanel) return;
+    const previousPanel = experienceApp.dataset.active;
+    if (!enteredPanels.has(name)) {
+      activePanel.classList.add("is-first-entry");
+      enteredPanels.add(name);
+    }
+    experienceApp.dataset.active = name;
+    if (name === "home" && previousPanel !== "home") showSlide(0);
+    resetHeroSlideTimer();
+    experiencePanels.forEach((panel) => {
+      const active = panel === activePanel;
+      panel.dataset.active = String(active);
+      const toggle = panel.querySelector(".experience-panel-toggle");
+      const content = panel.querySelector(".experience-panel-content, .hero-content");
+      toggle?.setAttribute("aria-expanded", String(active));
+      content?.setAttribute("aria-hidden", String(!active));
+      if (content && "inert" in content) content.inert = !active;
+    });
+    document.body.classList.toggle("experience-mode-locked", name !== "team");
+    schedulePageScrollbarUpdate();
+    if (name !== "team") window.scrollTo({ top: 0, behavior: "auto" });
+    if (location.hash !== `#${name}`) history.replaceState(null, "", `#${name}`);
+    return true;
+  };
+
+  window.addEventListener("wheel", (event) => {
+    const activeName = experienceApp.dataset.active;
+    if (activeName === "team") {
+      if (event.deltaY < 0 && window.scrollY <= 1) {
+        event.preventDefault();
+        if (!wheelGestureHandled) {
+          wheelGestureHandled = true;
+          stepPanel(-1);
+        }
+        resetWheelGestureAfterPause();
+        return;
+      }
+      return;
+    }
+    if (Math.abs(event.deltaY) < Math.abs(event.deltaX) || event.deltaY === 0) return;
+    event.preventDefault();
+    if (!wheelGestureHandled) {
+      wheelGestureHandled = true;
+      stepPanel(event.deltaY > 0 ? 1 : -1);
+    }
+    resetWheelGestureAfterPause();
+  }, { passive: false });
+
+  window.addEventListener("touchstart", (event) => {
+    const touch = event.touches[0];
+    if (!touch) return;
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchGestureHandled = false;
+  }, { passive: true });
+
+  window.addEventListener("touchmove", (event) => {
+    if (touchGestureHandled) {
+      event.preventDefault();
+      return;
+    }
+    const touch = event.touches[0];
+    if (!touch) return;
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    if (Math.abs(deltaY) < 56 || Math.abs(deltaY) < Math.abs(deltaX)) return;
+
+    const activeName = experienceApp.dataset.active;
+    if (activeName === "team") {
+      if (deltaY > 0 && window.scrollY <= 1) {
+        event.preventDefault();
+        touchGestureHandled = true;
+        stepPanel(-1);
+      }
+      return;
+    }
+
+    event.preventDefault();
+    touchGestureHandled = true;
+    stepPanel(deltaY < 0 ? 1 : -1);
+  }, { passive: false });
+
+  window.addEventListener("touchend", () => {
+    touchGestureHandled = false;
+  }, { passive: true });
+  window.addEventListener("touchcancel", () => {
+    touchGestureHandled = false;
+  }, { passive: true });
+
+  experienceApp.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-open-panel]");
+    if (!toggle) return;
+    event.preventDefault();
+    if (!openExperiencePanel(toggle.dataset.openPanel)) return;
+    if (toggle.hasAttribute("data-next-slide")) showSlide(activeSlide + 1);
+  });
+
+  experienceApp.querySelectorAll("[data-slide-to]").forEach((button) => {
+    button.addEventListener("click", () => showSlide(Number(button.dataset.slideTo)));
+  });
+
+  window.addEventListener("blur", resetHeroSlideTimer);
+  window.addEventListener("focus", resetHeroSlideTimer);
+  document.addEventListener("visibilitychange", resetHeroSlideTimer);
+
+  document.querySelectorAll(".experience-nav-link[data-open-panel], .footer-company [data-open-panel], .site-header .brand[data-open-panel], .footer-brand .brand[data-open-panel]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      closeMobileNavigation();
+      if (!openExperiencePanel(link.dataset.openPanel)) return;
+      if (link.hasAttribute("data-next-slide")) showSlide(activeSlide + 1);
+    });
+  });
+
+  const initialPanel = ["home", "services", "about", "team"].includes(location.hash.slice(1))
+    ? location.hash.slice(1)
+    : "home";
+  showSlide(activeSlide);
+  openExperiencePanel(initialPanel);
+  const waitForHeroImage = async (image) => {
+    if (!image.complete) {
+      await new Promise((resolve) => {
+        image.addEventListener("load", resolve, { once: true });
+        image.addEventListener("error", resolve, { once: true });
+      });
+    }
+    if (image.naturalWidth > 0 && typeof image.decode === "function") {
+      await image.decode().catch(() => {});
+    }
+  };
+  Promise.all(heroSlides.map((slide) => waitForHeroImage(slide.querySelector("img"))))
+    .then(() => {
+      experienceApp.classList.add("is-hero-ready", "is-page-intro");
+      resetHeroSlideTimer();
+      window.setTimeout(() => experienceApp.classList.remove("is-page-intro"), 2900);
+    });
+}
