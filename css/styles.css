@@ -1223,6 +1223,7 @@
     align-items: center;
     padding: 0.5rem;
     transition: color 0.2s ease, background-color 0.2s ease;
+    gap: 0.875rem;
   }
   .site-footer a:hover,
   .site-footer a:focus-visible {
@@ -1291,6 +1292,35 @@
   .js .hero-copy .button {
     opacity: 0;
     transform: translateY(0.5rem);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .js .card:not(.is-visible) {
+      opacity: 0;
+      transform: translateY(0.625rem);
+    }
+    .js .hero-copy .eyebrow:not(.is-visible),
+    .js .hero-copy h1:not(.is-visible),
+    .js .hero-copy > p:not(.is-visible),
+    .js .section .eyebrow:not(.is-visible),
+    .js .section-title:not(.is-visible),
+    .js .contact-form-wrap h2:not(.is-visible),
+    .js .service-detail-copy .lead:not(.is-visible),
+    .js .clients > p:not(.is-visible),
+    .js .about-content:not(.is-visible),
+    .js .team-intro > .lead:not(.is-visible),
+    .js .values-intro > .lead:not(.is-visible),
+    .js .contact-form-wrap > .lead:not(.is-visible),
+    .js .services-panel .experience-service,
+    .js .about-panel-title h2,
+    .js .about-image-interactive,
+    .js .about-panel-copy p,
+    .js .about-stats > div,
+    .js .team-panel-title h2,
+    .js .team-panel-title p,
+    .js .team-panel .experience-person,
+    .js .team-panel .team-contact-cta {
+      opacity: 0;
+    }
   }
   .text-reveal,
   .eyebrow-reveal {
@@ -1880,6 +1910,17 @@ body::-webkit-scrollbar {
     animation: hero-art-reveal 1.45s cubic-bezier(0.2, 0.72, 0.18, 1) both;
     will-change: clip-path, transform;
   }
+  @media (prefers-reduced-motion: no-preference) {
+    .js .experience-app[data-active="home"]:not(.is-hero-ready) .hero-slide.is-active img {
+      visibility: hidden;
+    }
+    .js .experience-app[data-active="home"]:not(.is-hero-ready) .hero-message h1,
+    .js .experience-app[data-active="home"]:not(.is-hero-ready) .hero-message > p,
+    .js .experience-app[data-active="home"]:not(.is-hero-ready) .hero-clients,
+    .js .experience-app[data-active="home"]:not(.is-hero-ready) .hero-slide-controls {
+      opacity: 0;
+    }
+  }
   @keyframes hero-art-reveal {
     from {
       clip-path: inset(0 0 100%);
@@ -2063,17 +2104,17 @@ body::-webkit-scrollbar {
     animation: hero-element-enter 0.7s cubic-bezier(0.2, 0.72, 0.18, 1) both;
   }
   .about-panel.is-entering .about-panel-copy p:nth-child(1) {
-    animation-delay: 0.28s;
+    animation-delay: 0.2s;
   }
   .about-panel.is-entering .about-panel-copy p:nth-child(2) {
-    animation-delay: 0.4s;
+    animation-delay: 0.3s;
   }
   .about-panel.is-entering .about-panel-copy p:nth-child(3) {
-    animation-delay: 0.52s;
+    animation-delay: 0.4s;
   }
-  .about-panel.is-entering .about-stats > div:nth-child(1) { animation-delay: 0.68s; }
-  .about-panel.is-entering .about-stats > div:nth-child(2) { animation-delay: 0.8s; }
-  .about-panel.is-entering .about-stats > div:nth-child(3) { animation-delay: 0.92s; }
+  .about-panel.is-entering .about-stats > div:nth-child(1) { animation-delay: 0.5s; }
+  .about-panel.is-entering .about-stats > div:nth-child(2) { animation-delay: 0.6s; }
+  .about-panel.is-entering .about-stats > div:nth-child(3) { animation-delay: 0.7s; }
   .about-panel.is-entering .about-stats > div:nth-child(4) {
     animation-delay: 1.04s;
   }
@@ -2266,7 +2307,8 @@ body::-webkit-scrollbar {
     margin-top: 1.2rem;
     font-size: 0.875rem;
   }
-  .about-image-interactive {
+  .about-image-interactive,
+  .team-image-interactive {
     --image-hover-x: 50%;
     --image-hover-y: 50%;
     --image-glow-opacity: 0;
@@ -2274,15 +2316,21 @@ body::-webkit-scrollbar {
     isolation: isolate;
     overflow: hidden;
     width: 100%;
-    height: 11.25rem;
-    margin-top: 2.5rem;
     transform: perspective(60rem) rotateX(var(--image-tilt-y, 0deg)) rotateY(var(--image-tilt-x, 0deg));
     transform-style: preserve-3d;
     transition: transform 0.3s cubic-bezier(0.2, 0.72, 0.18, 1);
     will-change: transform;
   }
+  .about-image-interactive {
+    margin-top: 2.5rem;
+  }
+  .team-image-interactive {
+    aspect-ratio: 1;
+  }
   .about-image-interactive::before,
-  .about-image-interactive::after {
+  .about-image-interactive::after,
+  .team-image-interactive::before,
+  .team-image-interactive::after {
     position: absolute;
     z-index: 1;
     inset: 0;
@@ -2291,10 +2339,12 @@ body::-webkit-scrollbar {
     opacity: var(--image-glow-opacity);
     transition: opacity 0.2s ease;
   }
-  .about-image-interactive::before {
+  .about-image-interactive::before,
+  .team-image-interactive::before {
     background: radial-gradient(42rem circle at var(--image-hover-x) var(--image-hover-y), rgb(225 243 255 / 0.11) 0, rgb(211 237 255 / 0.045) 36%, transparent 74%);
   }
-  .about-image-interactive::after {
+  .about-image-interactive::after,
+  .team-image-interactive::after {
     padding: 1px;
     background: radial-gradient(24rem circle at var(--image-hover-x) var(--image-hover-y), rgb(220 242 255 / 0.58) 0, rgb(186 224 255 / 0.25) 34%, transparent 78%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -2303,13 +2353,14 @@ body::-webkit-scrollbar {
     mask-composite: exclude;
   }
   .about-image-interactive:hover,
-  .about-image-interactive:focus-within {
+  .about-image-interactive:focus-within,
+  .team-image-interactive:hover,
+  .team-image-interactive:focus-within {
     --image-glow-opacity: 1;
   }
   .about-panel-image {
     display: block;
     width: 100%;
-    height: 100%;
     object-fit: cover;
   }
   .about-panel-copy {
@@ -2405,10 +2456,15 @@ body::-webkit-scrollbar {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid rgb(255 255 255 / 0.65);
   }
-  .experience-person > img {
+  .team-image-interactive {
     width: 100%;
     aspect-ratio: 1;
     background: rgb(255 255 255 / 0.15);
+  }
+  .team-image-interactive img {
+    display: block;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center top;
   }
@@ -2424,7 +2480,7 @@ body::-webkit-scrollbar {
     font-size: 0.875rem;
     line-height: 1.4;
   }
-  .experience-person > div {
+  .experience-person > div:not(.team-image-interactive) {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
@@ -2881,6 +2937,9 @@ body::-webkit-scrollbar {
     .about-image-interactive,
     .about-image-interactive::before,
     .about-image-interactive::after,
+    .team-image-interactive,
+    .team-image-interactive::before,
+    .team-image-interactive::after,
     .luxury-cursor,
     .about-stats > div::before,
     .hero-slide,

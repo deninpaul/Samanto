@@ -1,14 +1,117 @@
 @layer components {
-  /* Layout used only by the four standalone service pages. */
-  .service-hero {
-    padding-bottom: var(--s-96);
+  /* Standalone service pages share the home page's blue, grid and motion system. */
+  body.service-page {
+    background: var(--blue);
+    color: var(--on-blue);
   }
-  .service-hero img {
-    object-fit: cover;
-    border-radius: 0.325rem;
+  .service-page .wrap {
+    width: calc(100% - var(--gutter));
+    max-width: 100rem;
+  }
+  body.service-page main.service-main {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background-color: var(--blue);
+    padding-bottom: 2.5rem;
+  }
+  body.service-page main.service-main::before {
+    position: absolute;
+    z-index: -1;
+    inset: var(--header-h) 0 0;
+    content: "";
+    pointer-events: none;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    mix-blend-mode: lighten;
+    opacity: 0.8;
+  }
+  body.service-page main.service-main::after {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+    background: radial-gradient(circle 14rem at var(--section-cursor-x, 50%) var(--section-cursor-y, 50%), rgb(220 237 255 / 7%) 0%, rgb(220 237 255 / 5.5%) 30%, rgb(211 230 255 / 3.2%) 58%, rgb(211 230 255 / 1.2%) 82%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.55s ease-out;
+  }
+  body.service-page main.service-main.is-pointer-active::after {
+    opacity: 1;
+  }
+  .service-main > .service-hero,
+  .service-main > .service-details-section,
+  .service-main > .service-contact-cta-section {
+    position: relative;
+    z-index: 1;
+  }
+  body.service-property-valuation main.service-main::before { background-image: url("../assets/services-bg/property-valuation.png"); }
+  body.service-project-management main.service-main::before { background-image: url("../assets/services-bg/project-management.png"); }
+  body.service-design-engineering main.service-main::before { background-image: url("../assets/services-bg/design-engineering.png"); }
+  body.service-cost-management main.service-main::before { background-image: url("../assets/services-bg/cost-management.png"); }
+  .service-hero {
+    position: relative;
+    min-height: 20rem;
+    padding: 20rem 0 0 0;
+    overflow: hidden;
+    background: transparent;
+    color: var(--on-blue);
+  }
+  .service-hero .hero-inner {
+    z-index: 1;
+  }
+  .service-hero .hero-media {
+    display: none;
+  }
+  .service-hero .hero-copy {
+    max-width: 64rem;
+    padding-top: 0;
+  }
+  .service-hero .hero-copy h1 {
+    margin: 0;
+    color: #f0f4ff;
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .service-hero .hero-copy p {
+    max-width: 48rem;
+    color: var(--on-blue-muted);
+  }
+  .service-page .service-details-section {
+    color: var(--on-blue);
+  }
+  .service-page .service-details-section .section-title,
+  .service-page .service-team-info .card-title {
+    color: #f0f4ff;
+  }
+  .service-page .service-details-section .lead,
+  .service-page .service-details-section .role {
+    color: var(--on-blue-muted);
+  }
+  .service-page .service-team-card .chip {
+    color: var(--on-blue);
+    border-color: rgb(255 255 255 / 20%);
+    border-radius: 2.5rem;
+    background: rgb(255 255 255 / 10%);
+    padding: 0.25rem 0.5rem;
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    line-height: 1.15;
+  }
+  .service-page .service-team-card .chip--highlight {
+    color: #fff;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.25;
   }
   .service-details-section {
-    padding-top: var(--s-96);
+    padding-top: var(--s-64);
     row-gap: var(--s-96);
     column-gap: var(--s-24);
   }
@@ -20,7 +123,14 @@
     grid-column: 1 / -1;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--s-24);
-    row-gap: var(--s-48);
+    row-gap: var(--s-64);
+    min-width: 0;
+  }
+  .service-overview-copy {
+    display: grid;
+    grid-column: 1 / span 6;
+    gap: var(--s-48);
+    align-content: start;
     min-width: 0;
   }
 
@@ -31,78 +141,295 @@
     margin-top: 0;
   }
   .service-detail-copy {
-    grid-column: 1 / span 7;
+    grid-column: 1 / -1;
     max-width: 55rem;
+  }
+  .service-detail-copy .lead {
+    font-size: 1rem;
+    line-height: 1.6;
   }
   .service-detail-copy .lead + .lead {
     margin-top: var(--s-24);
   }
   .service-detail-stats {
-    grid-column: 9 / span 3;
+    grid-column: 1 / -1;
     grid-template-columns: 1fr;
     gap: var(--s-16);
     align-content: start;
     margin-top: 0;
   }
   .service-detail-stats .stat-card {
-    min-height: 8.5rem;
+    --entry-delay: 420ms;
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 1.5rem;
+    min-height: 6.5625rem;
+    padding: 1rem;
+    border: 1px solid rgb(255 255 255 / 15%);
+    border-radius: 0;
+    background: rgb(255 255 255 / 10%);
+    color: #f0f4ff;
+    box-shadow: none;
+    transition: opacity 0.6s ease var(--reveal-delay, 0ms), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms), border-color 0.25s ease, background-color 0.25s ease;
+  }
+  .service-detail-stats .stat-card:nth-child(2) { --entry-delay: 560ms; --reveal-delay: 140ms; }
+  .service-detail-stats .stat-card:nth-child(3) { --entry-delay: 700ms; --reveal-delay: 280ms; }
+  .service-detail-stats .stat-card:nth-child(4) { --entry-delay: 840ms; --reveal-delay: 420ms; }
+  .service-detail-stats .stat-card strong {
+    margin: 0;
+    color: #f0f4ff;
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .service-detail-stats .stat-card span {
+    margin-top: 0.25rem;
+    color: var(--on-blue-muted);
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  .service-detail-stats .stat-card .icon-badge {
+    grid-row: 1 / -1;
+    width: 2rem;
+    height: 2rem;
+    border-color: rgb(255 255 255 / 25%);
+    background: transparent;
+    color: #f0f4ff;
+  }
+  .service-detail-stats .stat-card .icon-badge .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .service-detail-stats .stat-card:hover .icon-badge,
+  .service-detail-stats .stat-card:focus-within .icon-badge {
+    color: #f0f4ff;
+  }
+  .service-detail-stats .stat-card:hover .icon-badge::before,
+  .service-detail-stats .stat-card:focus-within .icon-badge::before {
+    transform: scaleX(0);
+    transition: none;
+  }
+  .service-detail-stats .stat-card:hover,
+  .service-detail-stats .stat-card:focus-within {
+    border-color: rgb(232 244 255 / 38%);
+    background-color: rgb(255 255 255 / 12%);
+    transform: translateY(-0.125rem);
   }
   .service-team-block {
-    grid-column: 1 / -1;
+    grid-column: 8 / span 5;
     min-width: 0;
   }
   .service-team-block > .section-title {
-    margin: var(--s-16) 0 var(--s-64);
+    margin: var(--s-16) 0 var(--s-32);
   }
   .service-team-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--s-16);
     min-width: 0;
   }
   .service-team-card {
+    --entry-delay: 500ms;
+    position: relative;
+    isolation: isolate;
     display: flex;
     min-width: 0;
-    height: auto;
-    align-items: start;
-    gap: var(--s-24);
-    overflow: visible;
+    min-height: 7.75rem;
+    align-items: center;
+    gap: 2rem;
+    overflow: hidden;
+    padding: 0 0 1rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--on-blue);
+    box-shadow: none;
+    transition: opacity 0.6s ease var(--reveal-delay, 0ms), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms), border-color 0.3s ease;
+  }
+  .service-team-card::before {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+    display: none;
+  }
+  .service-team-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .service-team-card:hover .service-team-info,
+  .service-team-card:focus-within .service-team-info {
+    border-bottom-color: rgb(255 255 255 / 25%);
+  }
+  .service-team-card:nth-child(2) { --entry-delay: 620ms; --reveal-delay: 120ms; }
+  .service-team-card:nth-child(3) { --entry-delay: 740ms; --reveal-delay: 240ms; }
+  .service-team-card:nth-child(4) { --entry-delay: 860ms; --reveal-delay: 360ms; }
+  .service-team-card:nth-child(5) { --entry-delay: 980ms; --reveal-delay: 480ms; }
+  .service-team-card:nth-child(6) { --entry-delay: 1100ms; --reveal-delay: 600ms; }
+  .service-team-card:nth-child(7) { --entry-delay: 1220ms; --reveal-delay: 720ms; }
+  .service-team-card:nth-child(8) { --entry-delay: 1340ms; --reveal-delay: 840ms; }
+  .service-team-card:nth-child(9) { --entry-delay: 1460ms; --reveal-delay: 960ms; }
+  .service-detail-stats .stat-card.fluent-hover {
+    --hover-x: 50%;
+    --hover-y: 50%;
+    isolation: isolate;
+  }
+  .service-detail-stats .stat-card.fluent-hover::before,
+  .service-detail-stats .stat-card.fluent-hover::after {
+    z-index: 2;
+  }
+  .service-detail-stats .stat-card.fluent-hover > * {
+    position: relative;
+    z-index: 3;
   }
   .service-team-card .service-team-photo {
+    --image-hover-x: 50%;
+    --image-hover-y: 50%;
+    --image-glow-opacity: 0;
+    position: relative;
+    isolation: isolate;
     aspect-ratio: 1;
     flex: none;
-    height: 7em;
-    width: 7rem;
+    height: 6rem;
+    width: 6rem;
+    background: rgb(31 68 186 / 8%);
+    border-radius: 0;
+    transform: perspective(60rem) rotateX(var(--image-tilt-y, 0deg)) rotateY(var(--image-tilt-x, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.3s cubic-bezier(0.2, 0.72, 0.18, 1);
+    will-change: transform;
+  }
+  .service-team-card .service-team-photo::after {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    padding: 1px;
+    content: "";
+    pointer-events: none;
+    background: radial-gradient(24rem circle at var(--image-hover-x) var(--image-hover-y), rgb(220 242 255 / 0.58) 0, rgb(186 224 255 / 0.25) 34%, transparent 78%);
+    opacity: var(--image-glow-opacity);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    transition: opacity 0.2s ease;
+  }
+  .service-team-card .service-team-photo:hover,
+  .service-team-card .service-team-photo:focus-within {
+    --image-glow-opacity: 1;
   }
   .service-team-card .service-team-photo img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
     height: 100%;
-    margin-inline: auto;
     object-fit: cover;
     object-position: center;
   }
+  .service-team-photo-tint {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background: rgb(255 255 255 / 20%);
+  }
   .service-team-info {
+    position: relative;
+    display: grid;
+    grid-template-columns: 11.625rem minmax(0, 19.375rem);
+    grid-template-rows: auto auto;
+    align-items: start;
+    column-gap: 1.5rem;
     flex: 1 1 auto;
     min-width: 0;
+    min-height: 6rem;
+    align-self: center;
+    padding-top: 0.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgb(255 255 255 / 25%);
+    transition: border-color 0.2s ease;
     overflow: visible;
   }
-  .service-team-info .qualifications {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    max-height: none;
-    overflow: visible;
+  .service-team-info::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 1px;
+    content: "";
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .service-team-card:hover .service-team-info::after,
+  .service-team-card:focus-within .service-team-info::after {
+    transform: scaleX(1);
   }
   .service-team-info .card-title {
+    grid-column: 1;
+    grid-row: 1;
     margin-top: 0;
+    font-size: 1.3125rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.0125rem;
+  }
+  .service-team-info .role {
+    grid-column: 1;
+    grid-row: 2;
+    color: var(--on-blue-muted);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .service-team-info .qualifications {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-content: flex-start;
+    gap: 0.5rem;
+    max-height: none;
+    margin-top: 0;
+    overflow: visible;
+  }
+  .service-team-info .qualifications .chip:not(.chip--highlight) {
+    font-family: var(--font-serif);
+  }
+  .service-team-info .qualifications .chip--highlight {
+    order: 1;
+    margin-left: auto;
+    flex-basis: 100%;
+    justify-content: flex-end;
+    font-weight: 400;
   }
   .service-team-card .chip--highlight {
-    background: var(--blue-soft);
-    color: var(--blue);
+    background: rgb(255 255 255 / 14%);
+    color: #fff;
+  }
+  .service-contact-cta-section .team-contact-cta {
+    --reveal-delay: 180ms;
+    transition: opacity 0.6s ease var(--reveal-delay), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay);
   }
 
   @media (max-width: 64rem) {
     .service-overview {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .service-overview-copy,
+    .service-team-block {
+      grid-column: 1 / -1;
+    }
+    .service-team-block {
+      margin-top: var(--s-16);
     }
     .service-detail-copy,
     .service-detail-stats {
@@ -131,8 +458,46 @@
       padding-top: var(--s-64);
     }
     .service-hero {
-    padding-bottom: var(--s-64);
-  }
+      min-height: 24rem;
+      padding: 13rem 0 2rem;
+    }
+    .service-hero .hero-copy h1 {
+      font-size: 2.5rem;
+    }
+    .service-team-card {
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .service-team-card .service-team-photo {
+      width: 5rem;
+      height: 5rem;
+    }
+    .service-team-info {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 0.25rem;
+      padding-bottom: 0.75rem;
+    }
+    .service-team-info .role,
+    .service-team-info .qualifications {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .service-team-info .qualifications {
+      justify-content: flex-start;
+      margin-top: 0.5rem;
+    }
+    .service-team-info .qualifications .chip--highlight {
+      margin-left: 0;
+    }
+    .service-contact-cta-section .team-contact-cta {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 2.5rem 0 2rem;
+      padding: 1rem;
+    }
+    .service-contact-cta-section .team-contact-message {
+      font-size: 1rem;
+    }
   }
   @media (max-width: 25rem) {
     .service-team-card {
@@ -142,6 +507,48 @@
       flex-basis: 5rem;
       height: 5rem;
       width: 5rem;
+    }
+  }
+}
+
+@layer motion {
+  @keyframes service-background-radial-in {
+    from {
+      opacity: 0;
+      clip-path: circle(0 at 50% 0);
+      filter: blur(0.5rem);
+    }
+    to {
+      opacity: 0.8;
+      clip-path: circle(180% at 50% 0);
+      filter: blur(0);
+    }
+  }
+  @keyframes service-entry-rise {
+    from { opacity: 0; transform: translateY(0.625rem); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  body.service-page main.service-main::before {
+    animation: service-background-radial-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .service-detail-stats .stat-card.is-visible,
+  .service-team-card.is-visible {
+    animation: service-entry-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) var(--entry-delay, 0ms) both;
+  }
+  .service-page .service-detail-copy .lead.is-visible {
+    animation: service-entry-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body.service-page main.service-main::before {
+      animation: none;
+      clip-path: none;
+      filter: none;
+      opacity: 0.8;
+    }
+    .service-detail-stats .stat-card.is-visible,
+    .service-team-card.is-visible,
+    .service-page .service-detail-copy .lead.is-visible {
+      animation: none;
     }
   }
 }

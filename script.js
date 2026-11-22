@@ -209,6 +209,7 @@ const cardRevealObserver = "IntersectionObserver" in window
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const card = entry.target;
+          card.dataset.revealStartedAt = String(performance.now());
           card.classList.add("is-visible");
           revealCardImages(card);
           observer.unobserve(card);
@@ -219,8 +220,15 @@ const cardRevealObserver = "IntersectionObserver" in window
   : null;
 
 cardRevealTargets.forEach((card) => {
+  if (card.matches(".service-page .service-team-card")) {
+    card.dataset.revealStartedAt = String(performance.now());
+    card.classList.add("is-visible");
+    revealCardImages(card);
+    return;
+  }
   if (cardRevealObserver) cardRevealObserver.observe(card);
   else {
+    card.dataset.revealStartedAt = String(performance.now());
     card.classList.add("is-visible");
     revealCardImages(card);
   }
@@ -247,7 +255,7 @@ projectImageTargets.forEach((image) => {
 });
 
 const textRevealTargets = document.querySelectorAll(
-  ".hero-copy .eyebrow, .section .eyebrow, .hero-copy h1, .section-title, .contact-form-wrap h2, .hero-copy > p, .clients > p, .about-content, .team-intro > .lead, .values-intro > .lead, .contact-form-wrap > .lead",
+  ".hero-copy .eyebrow, .section .eyebrow, .hero-copy h1, .section-title, .contact-form-wrap h2, .hero-copy > p, .service-detail-copy .lead, .clients > p, .about-content, .team-intro > .lead, .values-intro > .lead, .contact-form-wrap > .lead",
 );
 
 const textRevealObserver = "IntersectionObserver" in window
@@ -255,7 +263,25 @@ const textRevealObserver = "IntersectionObserver" in window
       (entries, observer) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
+          const element = entry.target;
+          if (element.matches(".service-page .service-detail-copy .lead")) {
+            const highlights = [...document.querySelectorAll(".service-page .service-detail-stats .stat-card")];
+            const highlightRevealTime = performance.now();
+            highlights.forEach((card) => {
+              if (card.classList.contains("is-visible")) return;
+              card.dataset.revealStartedAt = String(highlightRevealTime);
+              card.classList.add("is-visible");
+              cardRevealObserver?.unobserve(card);
+            });
+            const copyIndex = [...element.parentElement.querySelectorAll(".lead")].indexOf(element);
+            const scheduledStarts = highlights
+              .map((card) => Number(card.dataset.revealStartedAt) + (Number.parseFloat(getComputedStyle(card).getPropertyValue("--entry-delay")) || 0));
+            const waitForLastHighlight = scheduledStarts.length
+              ? Math.max(0, Math.max(...scheduledStarts) - performance.now() + 60)
+              : 0;
+            element.style.setProperty("--reveal-delay", `${waitForLastHighlight + Math.max(0, copyIndex) * 100}ms`);
+          }
+          element.classList.add("is-visible");
           observer.unobserve(entry.target);
         });
       },
@@ -284,9 +310,12 @@ textRevealTargets.forEach((element) => {
   const isEyebrow = element.classList.contains("eyebrow");
   const isHeading = element.matches("h1, h2");
   const isClientCaption = element.matches(".clients > p");
+  const serviceCopyIndex = element.matches(".service-detail-copy .lead")
+    ? [...element.parentElement.querySelectorAll(".lead")].indexOf(element)
+    : -1;
   const isHeroText = Boolean(element.closest(".hero-copy"));
   element.classList.add(isEyebrow ? "eyebrow-reveal" : "text-reveal");
-  element.style.setProperty("--reveal-delay", isEyebrow || isClientCaption ? "0ms" : isHeading ? "120ms" : "220ms");
+  element.style.setProperty("--reveal-delay", serviceCopyIndex >= 0 ? `${220 + serviceCopyIndex * 140}ms` : isEyebrow || isClientCaption ? "0ms" : isHeading ? "120ms" : "220ms");
 
   if (isClientCaption && clientCaptionObserver) {
     clientCaptionObserver.observe(element);
@@ -582,6 +611,47 @@ document.addEventListener("pointerout", (event) => {
 });
 window.addEventListener("blur", hideSiteCursor);
 
+document.querySelectorAll(".service-page .fluent-hover").forEach((surface) => {
+  surface.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+    const bounds = surface.getBoundingClientRect();
+    surface.style.setProperty("--hover-x", `${event.clientX - bounds.left}px`);
+    surface.style.setProperty("--hover-y", `${event.clientY - bounds.top}px`);
+  });
+});
+
+document.querySelectorAll(".service-team-photo").forEach((imageFrame) => {
+  imageFrame.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+    const bounds = imageFrame.getBoundingClientRect();
+    const pointerX = (event.clientX - bounds.left) / bounds.width;
+    const pointerY = (event.clientY - bounds.top) / bounds.height;
+    imageFrame.style.setProperty("--image-hover-x", `${pointerX * 100}%`);
+    imageFrame.style.setProperty("--image-hover-y", `${pointerY * 100}%`);
+    imageFrame.style.setProperty("--image-tilt-x", `${(pointerX - 0.5) * 10}deg`);
+    imageFrame.style.setProperty("--image-tilt-y", `${(0.5 - pointerY) * 10}deg`);
+  });
+  imageFrame.addEventListener("pointerleave", () => {
+    imageFrame.style.setProperty("--image-tilt-x", "0deg");
+    imageFrame.style.setProperty("--image-tilt-y", "0deg");
+  });
+});
+
+document.querySelectorAll(".service-page main.service-main").forEach((content) => {
+  content.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse" || event.pointerType === "pen") {
+      content.classList.add("is-pointer-active");
+    }
+  });
+  content.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+    const bounds = content.getBoundingClientRect();
+    content.style.setProperty("--section-cursor-x", `${event.clientX - bounds.left}px`);
+    content.style.setProperty("--section-cursor-y", `${event.clientY - bounds.top}px`);
+  });
+  content.addEventListener("pointerleave", () => content.classList.remove("is-pointer-active"));
+});
+
 const experienceApp = document.querySelector("#experience-app");
 if (experienceApp) {
   const experiencePanels = [...experienceApp.querySelectorAll("[data-panel]")];
@@ -607,20 +677,21 @@ if (experienceApp) {
     });
     content.addEventListener("pointerleave", () => content.classList.remove("is-pointer-active"));
   });
-  const aboutImage = experienceApp.querySelector(".about-image-interactive");
-  aboutImage?.addEventListener("pointermove", (event) => {
-    if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
-    const bounds = aboutImage.getBoundingClientRect();
-    const pointerX = (event.clientX - bounds.left) / bounds.width;
-    const pointerY = (event.clientY - bounds.top) / bounds.height;
-    aboutImage.style.setProperty("--image-hover-x", `${pointerX * 100}%`);
-    aboutImage.style.setProperty("--image-hover-y", `${pointerY * 100}%`);
-    aboutImage.style.setProperty("--image-tilt-x", `${(pointerX - 0.5) * 10}deg`);
-    aboutImage.style.setProperty("--image-tilt-y", `${(0.5 - pointerY) * 10}deg`);
-  });
-  aboutImage?.addEventListener("pointerleave", () => {
-    aboutImage.style.setProperty("--image-tilt-x", "0deg");
-    aboutImage.style.setProperty("--image-tilt-y", "0deg");
+  experienceApp.querySelectorAll(".about-image-interactive, .team-image-interactive").forEach((imageFrame) => {
+    imageFrame.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+      const bounds = imageFrame.getBoundingClientRect();
+      const pointerX = (event.clientX - bounds.left) / bounds.width;
+      const pointerY = (event.clientY - bounds.top) / bounds.height;
+      imageFrame.style.setProperty("--image-hover-x", `${pointerX * 100}%`);
+      imageFrame.style.setProperty("--image-hover-y", `${pointerY * 100}%`);
+      imageFrame.style.setProperty("--image-tilt-x", `${(pointerX - 0.5) * 10}deg`);
+      imageFrame.style.setProperty("--image-tilt-y", `${(0.5 - pointerY) * 10}deg`);
+    });
+    imageFrame.addEventListener("pointerleave", () => {
+      imageFrame.style.setProperty("--image-tilt-x", "0deg");
+      imageFrame.style.setProperty("--image-tilt-y", "0deg");
+    });
   });
   const heroSlides = [...experienceApp.querySelectorAll(".hero-slide")];
   const slideButtons = [...experienceApp.querySelectorAll("[data-slide-to]")];
