@@ -1316,7 +1316,7 @@
     .js .about-panel-copy p,
     .js .about-stats > div,
     .js .team-panel-title h2,
-    .js .team-panel-title p,
+    .js .team-full-link,
     .js .team-panel .experience-person,
     .js .team-panel .team-contact-cta {
       opacity: 0;
@@ -1563,7 +1563,7 @@ body::-webkit-scrollbar {
   .site-header .button--header:hover,
   .site-header .button--header:focus-visible {
     --header-glow-opacity: 1;
-    --button-hover-fill: transparent;
+    background-color: #e99422;
     color: #fff;
   }
 
@@ -2128,7 +2128,7 @@ body::-webkit-scrollbar {
   .team-panel.is-entering .team-panel-title h2 {
     animation: section-title-enter 0.95s cubic-bezier(0.2, 0.72, 0.18, 1) 0.18s both;
   }
-  .team-panel.is-entering .team-panel-title p {
+  .team-panel.is-entering .team-full-link {
     animation: hero-element-enter 0.75s cubic-bezier(0.2, 0.72, 0.18, 1) 0.32s both;
   }
   .team-panel.is-entering .experience-person {
@@ -2438,11 +2438,21 @@ body::-webkit-scrollbar {
   .team-panel-title h2 {
     font-size: clamp(2rem, 3.2vw, 3rem);
   }
-  .team-panel-title p {
-    max-width: 16rem;
-    margin-top: 1.2rem;
+  .team-full-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding: 0.75rem 1.125rem;
+    border: 1px solid rgb(255 255 255 / 0.6);
+    color: #fff;
     font-size: 0.875rem;
     line-height: 1.5;
+    text-decoration: none;
+  }
+  .team-full-link img {
+    width: 0.75rem;
+    height: 0.75rem;
   }
   .experience-team-grid {
     display: grid;
@@ -2739,15 +2749,6 @@ body::-webkit-scrollbar {
     .experience-team-grid {
       grid-column: 3 / span 6;
     }
-    .team-panel-title {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-    .team-panel-title p {
-      margin: 0;
-    }
   }
   @media (max-width: 47.5rem) {
     :root {
@@ -2879,12 +2880,6 @@ body::-webkit-scrollbar {
     .about-stats > div {
       grid-template-columns: 5rem 1fr;
     }
-    .team-panel-title {
-      display: block;
-    }
-    .team-panel-title p {
-      margin-top: 0.5rem;
-    }
     .experience-team-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1rem;
@@ -2971,7 +2966,7 @@ body::-webkit-scrollbar {
     .experience-app .services-panel.is-entering .services-panel-heading,
     .experience-app .services-panel.is-entering .experience-service,
     .experience-app .team-panel.is-entering .team-panel-title h2,
-    .experience-app .team-panel.is-entering .team-panel-title p,
+    .experience-app .team-panel.is-entering .team-full-link,
     .experience-app .team-panel.is-entering .experience-person,
     .experience-app .team-panel.is-entering .team-contact-cta {
       animation: none !important;

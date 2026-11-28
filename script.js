@@ -699,8 +699,11 @@ if (experienceApp) {
   const scrollTitleRevealed = new Set();
   let activeSlide = 0;
   let heroSlideTimer = 0;
+  let lastWheelTime = -Infinity;
+  let lastWheelDirection = 0;
+  let wheelPeakDelta = 0;
+  let wheelTailDelta = Infinity;
   let wheelGestureHandled = false;
-  let wheelGestureTimer = 0;
   let touchStartX = 0;
   let touchStartY = 0;
   let touchGestureHandled = false;
@@ -717,13 +720,6 @@ if (experienceApp) {
       outgoingPanel.classList.add("is-scroll-title-reveal");
       scrollTitleRevealed.add(panelName);
     }
-  };
-
-  const resetWheelGestureAfterPause = () => {
-    window.clearTimeout(wheelGestureTimer);
-    wheelGestureTimer = window.setTimeout(() => {
-      wheelGestureHandled = false;
-    }, 160);
   };
 
   const resetHeroSlideTimer = () => {
@@ -781,27 +777,41 @@ if (experienceApp) {
   };
 
   window.addEventListener("wheel", (event) => {
-    const activeName = experienceApp.dataset.active;
-    if (activeName === "team") {
-      if (event.deltaY < 0 && window.scrollY <= 1) {
+    if (event.ctrlKey) return;
+    if (Math.abs(event.deltaY) < Math.abs(event.deltaX) || event.deltaY === 0) return;
+
+    const direction = Math.sign(event.deltaY);
+    const delta = Math.abs(event.deltaY);
+    const now = event.timeStamp;
+    // A new swipe can build speed before the previous swipe's momentum ends.
+    const renewedSwipe = event.deltaMode === 0 && delta >= 12 &&
+      (direction !== lastWheelDirection || delta >= wheelTailDelta * 3 + 8);
+    if (now - lastWheelTime >= 160 || renewedSwipe) {
+      wheelGestureHandled = false;
+      lastWheelDirection = direction;
+      wheelPeakDelta = 0;
+      wheelTailDelta = Infinity;
+    }
+    lastWheelTime = now;
+    wheelPeakDelta = Math.max(wheelPeakDelta, delta);
+    if (direction === lastWheelDirection && delta <= wheelPeakDelta / 2) {
+      wheelTailDelta = Math.min(wheelTailDelta, delta);
+    }
+
+    if (experienceApp.dataset.active === "team") {
+      // Consume the momentum from the swipe that opened Team before allowing page scrolling.
+      if (wheelGestureHandled) {
         event.preventDefault();
-        if (!wheelGestureHandled) {
-          wheelGestureHandled = true;
-          stepPanel(-1);
-        }
-        resetWheelGestureAfterPause();
         return;
       }
-      return;
+      if (direction > 0 || window.scrollY > 1) return;
     }
-    if (Math.abs(event.deltaY) < Math.abs(event.deltaX) || event.deltaY === 0) return;
     event.preventDefault();
     if (!wheelGestureHandled) {
       wheelGestureHandled = true;
-      stepPanel(event.deltaY > 0 ? 1 : -1);
+      stepPanel(direction);
     }
-    resetWheelGestureAfterPause();
-  }, { passive: false });
+  }, { capture: true, passive: false });
 
   window.addEventListener("touchstart", (event) => {
     const touch = event.touches[0];
@@ -865,8 +875,10 @@ if (experienceApp) {
     });
   });
 
-  const initialPanel = ["home", "services", "about", "team"].includes(location.hash.slice(1))
-    ? location.hash.slice(1)
+  const initialHash = location.hash.slice(1);
+  const requestedPanel = initialHash === "team-members" ? "team" : initialHash;
+  const initialPanel = ["home", "services", "about", "team"].includes(requestedPanel)
+    ? requestedPanel
     : "home";
   experienceApp.classList.add("is-page-intro");
   window.setTimeout(() => experienceApp.classList.remove("is-page-intro"), 1000);
